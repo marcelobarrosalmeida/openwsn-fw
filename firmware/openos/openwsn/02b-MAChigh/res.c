@@ -10,7 +10,7 @@
 #include "scheduler.h"
 #include "opentimers.h"
 #include "debugpins.h"
-
+#include "security.h"
 //=========================== variables =======================================
 
 res_vars_t res_vars;
@@ -245,7 +245,7 @@ owerror_t res_send_internal(OpenQueueEntry_t* msg, uint8_t iePresent, uint8_t fr
                             msg->l2_frameType,
                             iePresent,
                             frameVersion,
-                            IEEE154_SEC_NO_SECURITY,
+                            security_get_level(),
                             msg->l2_dsn,
                             &(msg->l2_nextORpreviousHop)
                             );

@@ -20,7 +20,7 @@ Note that we are writing the field from the end of the header to the beginning.
 \param[in]     frameType        Type of IEEE802.15.4 frame.
 \param[in]     ielistpresent    Is the IE list present¿
 \param[in]     frameVersion     IEEE802.15.4 frame version.
-\param[in]     securityEnabled  Is security enabled on this frame?
+\param[in]     securityLevel    Security level for this frame
 \param[in]     sequenceNumber   Sequence number of this frame.
 \param[in]     nextHop          Address of the next hop
 */
@@ -28,11 +28,17 @@ void ieee802154_prependHeader(OpenQueueEntry_t* msg,
                               uint8_t           frameType,
                               uint8_t           ielistpresent,
                               uint8_t           frameVersion,
-                              bool              securityEnabled,
+                              bool              securityLevel,
                               uint8_t           sequenceNumber,
                               open_addr_t*      nextHop) {
    uint8_t temp_8b;
-   
+   bool securityEnabled = securityLevel > 0 ? 1 : 0;
+   // check security
+   if(securityEnabled) {
+        ieee802154_sec_hdr_t sec_hdr;
+        security_encrypt(msg,&sec_hdr);
+        ieee802154_prependSecurityHeader(msg,&sec_hdr);
+   }
    //General IEs here (those that are carried in all packets) -- None by now.
    
    // previousHop address (always 64-bit)
@@ -102,7 +108,7 @@ void ieee802154_prependHeader(OpenQueueEntry_t* msg,
 /**
 \brief Retreieve the IEEE802.15.4 MAC header from a (just received) packet.
 
-Note We are writing the fields from the begnning of the header to the end.
+Note We are writing the fields from the beginning of the header to the end.
 
 \param[in,out] msg            The message just received.
 \param[out] ieee802514_header The internal header to write the data to.
@@ -241,4 +247,122 @@ void ieee802154_retrieveHeader(OpenQueueEntry_t*      msg,
    ieee802514_header->valid=TRUE;
 }
 
+void ieee802154_prependSecurityHeader(OpenQueueEntry_t* msg, ieee802154_sec_hdr_t* sec_hdr) {
+    uint8_t temp_8b;
+    packetfunctions_reserveHeaderSize(msg,sec_hdr->header_length);
+    msg->payload[0] = sec_hdr->sec_ctrl.sec_level | (sec_hdr->sec_ctrl.key_id_mode << 3);
+    // big or little ?
+    msg->payload[1] = (uint8_t) (sec_hdr->frame_cntr);
+    msg->payload[2] = (uint8_t) (sec_hdr->frame_cntr >> 8);
+    msg->payload[3] = (uint8_t) (sec_hdr->frame_cntr >> 16);
+    msg->payload[4] = (uint8_t) (sec_hdr->frame_cntr >> 24);
+    
+    switch(sec_hdr->sec_ctrl.key_id_mode)
+    {
+        case IEEE154_SEC_ID_MODE_IMPLICIT:
+            break;
+        case IEEE154_SEC_ID_MODE_KEY_INDEX_1:
+            msg->payload[5] = sec_hdr->key_id.key_idx;
+            break;
+        case IEEE154_SEC_ID_MODE_KEY_INDEX_4:
+            msg->payload[5] = (uint8_t) (sec_hdr->key_id.key_src.key_src_4);
+            msg->payload[6] = (uint8_t) (sec_hdr->key_id.key_src.key_src_4 >> 8);
+            msg->payload[7] = (uint8_t) (sec_hdr->key_id.key_src.key_src_4 >> 16);
+            msg->payload[8] = (uint8_t) (sec_hdr->key_id.key_src.key_src_4 >> 24);
+            msg->payload[9] = sec_hdr->key_id.key_idx;
+            break;
+        case IEEE154_SEC_ID_MODE_KEY_INDEX_8:
+        {
+            uint32_t v1, v2;
+            msg->payload[5] = (uint8_t) (sec_hdr->key_id.key_src.key_src_8);
+            msg->payload[6] = (uint8_t) (sec_hdr->key_id.key_src.key_src_8 >> 8);
+            msg->payload[7] = (uint8_t) (sec_hdr->key_id.key_src.key_src_8 >> 16);
+            msg->payload[8] = (uint8_t) (sec_hdr->key_id.key_src.key_src_8 >> 24);
+            msg->payload[5] = (uint8_t) (sec_hdr->key_id.key_src.key_src_8 >> 32);
+            msg->payload[6] = (uint8_t) (sec_hdr->key_id.key_src.key_src_8 >> 40);
+            msg->payload[7] = (uint8_t) (sec_hdr->key_id.key_src.key_src_8 >> 48);
+            msg->payload[8] = (uint8_t) (sec_hdr->key_id.key_src.key_src_8 >> 56);
+            msg->payload[13] = sec_hdr->key_id.key_idx;
+            break;
+        }
+        default:
+            return;
+    }
+    
+}
+
+
+void ieee802154_retrieveSecurityHeader(OpenQueueEntry_t* msg, ieee802154_sec_hdr_t* sec_hdr) {
+    uint8_t temp_8b;
+    sec_hdr->valid = FALSE;
+    // minimum size for security header
+    if(msg->length < 5)
+        return;
+    
+    temp_8b = msg->payload[0];
+    
+    if((temp_8b & 0xE0) > 0)
+        return;
+    
+    sec_hdr->sec_ctrl.sec_level = temp_8b & 0x07;
+    sec_hdr->sec_ctrl.key_id_mode = (temp_8b & 0x18) >> 3;
+    
+    // key id field is variable (0/1/5/9), minimum lenght = 5 + (0/1/5/9)
+    if(((sec_hdr->sec_ctrl.key_id_mode == IEEE154_SEC_ID_MODE_IMPLICIT) && (msg->length < 5)) || 
+       ((sec_hdr->sec_ctrl.key_id_mode == IEEE154_SEC_ID_MODE_KEY_INDEX_1) && (msg->length < 6)) ||
+       ((sec_hdr->sec_ctrl.key_id_mode == IEEE154_SEC_ID_MODE_KEY_INDEX_4) && (msg->length < 10)) ||
+       ((sec_hdr->sec_ctrl.key_id_mode == IEEE154_SEC_ID_MODE_KEY_INDEX_8) && (msg->length < 14))) {
+       return;
+    }
+    
+    // BIG OT LITTLE ??? TODO 
+    sec_hdr->frame_cntr = msg->payload[1] | 
+                         (msg->payload[2] << 8) | 
+                         (msg->payload[3] << 16) | 
+                         (msg->payload[4] << 24);
+    
+    switch(sec_hdr->sec_ctrl.key_id_mode)
+    {
+        case IEEE154_SEC_ID_MODE_IMPLICIT:
+            sec_hdr->header_length = 5;
+            sec_hdr->key_id.key_src_idx_size = 0;
+            break;
+        case IEEE154_SEC_ID_MODE_KEY_INDEX_1:
+            sec_hdr->header_length = 6;
+            sec_hdr->key_id.key_src_idx_size = 1;
+            sec_hdr->key_id.key_idx = msg->payload[5];
+            break;
+        case IEEE154_SEC_ID_MODE_KEY_INDEX_4:
+            sec_hdr->header_length = 10;
+            sec_hdr->key_id.key_src_idx_size = 4;
+            sec_hdr->key_id.key_src.key_src_4 = msg->payload[5] | 
+                                               (msg->payload[6] << 8) | 
+                                               (msg->payload[7] << 16) | 
+                                               (msg->payload[8] << 24);
+            sec_hdr->key_id.key_idx = msg->payload[9];
+            break;
+        case IEEE154_SEC_ID_MODE_KEY_INDEX_8:
+        {
+            uint32_t v1, v2;
+            sec_hdr->header_length = 14;
+            sec_hdr->key_id.key_src_idx_size = 8;
+            v1 = msg->payload[5] | 
+                (msg->payload[6] << 8) | 
+                (msg->payload[7] << 16) | 
+                (msg->payload[8] << 24);
+            v2 = msg->payload[9] | 
+                (msg->payload[10] << 8) | 
+                (msg->payload[11] << 16) | 
+                (msg->payload[12] << 24);
+            sec_hdr->key_id.key_src.key_src_8 = (((uint64_t) v1) << 32) | v2;
+            sec_hdr->key_id.key_idx = msg->payload[13];
+            break;
+        }
+        default:
+            return;
+    }
+ 
+    sec_hdr->valid = TRUE;
+}
+ 
 //=========================== private =========================================
