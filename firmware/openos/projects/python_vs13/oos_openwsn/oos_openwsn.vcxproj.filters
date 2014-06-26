@@ -144,6 +144,9 @@
     <ClCompile Include="..\..\..\..\..\build\python_gcc\kernel\openos\scheduler_obj.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf\sens_itf_obj.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\bsp\boards\python\supply_obj.c">
       <Filter>Source Files</Filter>
     </ClCompile>

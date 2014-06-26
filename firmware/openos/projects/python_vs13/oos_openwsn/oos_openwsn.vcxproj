@@ -50,6 +50,7 @@
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rreg\rreg_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rrt\rrt_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rwellknown\rwellknown_obj.c" />
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf\sens_itf_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\tcpecho\tcpecho_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\tcpinject\tcpinject_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\tcpprint\tcpprint_obj.c" />
