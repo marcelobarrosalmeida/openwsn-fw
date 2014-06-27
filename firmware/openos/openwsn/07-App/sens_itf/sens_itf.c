@@ -1,98 +1,410 @@
-#include "openwsn.h"
-#include "opencoap.h"
-#include "openqueue.h"
+#include <string.h>
+#include <stdint.h>
 #include "sens_itf.h"
-#include "packetfunctions.h"
+#include "../os/os_defs.h"
+#include "../os/os_timer.h"
+#include "../os/os_util.h"
+#include "../util/buf_io.h"
+#include "../util/crc16.h"
 
-owerror_t sens_itf_receive(
-   OpenQueueEntry_t* msg,
-   coap_header_iht*  coap_header,
-   coap_option_iht*  coap_options
-);
-void sens_itf_sendDone(
-   OpenQueueEntry_t* msg,
-   owerror_t error
-);
+#define SENS_ITF_DBG_FRAME 1
 
-const uint8_t sens_itf_path0[]       = "sens";
-coap_resource_desc_t sens_itf_vars;
+uint8_t sens_itf_unpack_point_value(sens_itf_cmd_point_t *point, uint8_t *buf)
+{
+    uint8_t size = 0;
 
-void sens_itf_init() {
-   
-   // prepare the resource descriptor for the /l path
-   sens_itf_vars.path0len            = sizeof(sens_itf_path0)-1;
-   sens_itf_vars.path0val            = (uint8_t*)(&sens_itf_path0);
-   sens_itf_vars.path1len            = 0;
-   sens_itf_vars.path1val            = NULL;
-   sens_itf_vars.componentID         = COMPONENT_SENS_ITF;
-   sens_itf_vars.callbackRx          = &sens_itf_receive;
-   sens_itf_vars.callbackSendDone    = &sens_itf_sendDone;
-   
-   // register with the CoAP module
-   opencoap_register(&sens_itf_vars);
+    switch (point->type)
+    {
+    case SENS_ITF_DT_U8:
+        point->value.u8 = buf_io_get8_fl(buf);
+        size = 1;
+        break;
+    case SENS_ITF_DT_S8:
+        point->value.s8 = buf_io_get8_fl(buf);
+        size = 1;
+        break;
+    case SENS_ITF_DT_U16:
+        point->value.u16 = buf_io_get16_fl(buf);
+        size = 2;
+        break;
+    case SENS_ITF_DT_S16:
+        point->value.s16 = buf_io_get16_fl(buf);
+        size = 2;
+        break;
+    case SENS_ITF_DT_U32:
+        point->value.u32 = buf_io_get32_fl(buf);
+        size = 4;
+        break;
+    case SENS_ITF_DT_S32:
+        point->value.s32 = buf_io_get32_fl(buf);
+        size = 4;
+        break;
+    case SENS_ITF_DT_U64:
+        point->value.u64 = buf_io_get64_fl(buf);
+        size = 8;
+        break;
+    case SENS_ITF_DT_S64:
+        point->value.s64 = buf_io_get64_fl(buf);
+        size = 8;
+        break;
+    case SENS_ITF_DT_FLOAT:
+        point->value.fp32 = buf_io_getf_fl(buf);
+        size = 4;
+        break;
+    case SENS_ITF_DT_DOUBLE:
+        point->value.fp64 = buf_io_getd_fl(buf);
+        size = 8;
+        break;
+    default:
+        break;
+    }
+
+    return size;
 }
 
-//=========================== private =========================================
+uint8_t sens_itf_pack_point_value(const sens_itf_cmd_point_t *point, uint8_t *buf)
+{
+    uint8_t size = 0;
 
-/**
-\brief Called when a CoAP message is received for this resource.
+    switch (point->type)
+    {
+    case SENS_ITF_DT_U8:
+        buf_io_put8_tl(point->value.u8, buf);
+        size = 1;
+        break;
+    case SENS_ITF_DT_S8:
+        buf_io_put8_tl(point->value.s8, buf);
+        size = 1;
+        break;
+    case SENS_ITF_DT_U16:
+        buf_io_put16_tl(point->value.u16, buf);
+        size = 2;
+        break;
+    case SENS_ITF_DT_S16:
+        buf_io_put16_tl(point->value.s16, buf);
+        size = 2;
+        break;
+    case SENS_ITF_DT_U32:
+        buf_io_put32_tl(point->value.u32, buf);
+        size = 4;
+        break;
+    case SENS_ITF_DT_S32:
+        buf_io_put32_tl(point->value.s32, buf);
+        size = 4;
+        break;
+    case SENS_ITF_DT_U64:
+        buf_io_put64_tl(point->value.u64, buf);
+        size = 8;
+        break;
+    case SENS_ITF_DT_S64:
+        buf_io_put64_tl(point->value.s64, buf);
+        size = 8;
+        break;
+    case SENS_ITF_DT_FLOAT:
+        buf_io_putf_tl(point->value.fp32, buf);
+        size = 4;
+        break;
+    case SENS_ITF_DT_DOUBLE:
+        buf_io_putd_tl(point->value.fp64, buf);
+        size = 8;
+        break;
+    default:
+        break;
+    }
 
-\param[in] msg          The received message. CoAP header and options already
-   parsed.
-\param[in] coap_header  The CoAP header contained in the message.
-\param[in] coap_options The CoAP options contained in the message.
-
-\return Whether the response is prepared successfully.
-*/
-owerror_t sens_itf_receive(
-      OpenQueueEntry_t* msg,
-      coap_header_iht*  coap_header,
-      coap_option_iht*  coap_options
-   ) {
-   owerror_t outcome;
-   
-   switch (coap_header->Code) {
-      case COAP_CODE_REQ_GET:
-         // reset packet payload
-         msg->payload                     = &(msg->packet[127]);
-         msg->length                      = 0;
-         
-         // add CoAP payload
-         packetfunctions_reserveHeaderSize(msg,1+11);
-         msg->payload[0]                  = COAP_PAYLOAD_MARKER;
-         memcpy(&msg->payload[1],"hello world",11);
-            
-         // set the CoAP header
-         coap_header->Code                = COAP_CODE_RESP_CONTENT;
-         
-         outcome                          = E_SUCCESS;
-         break;
-      
-      case COAP_CODE_REQ_PUT:
-         // reset packet payload
-         msg->payload                     = &(msg->packet[127]);
-         msg->length                      = 0;
-         
-         // set the CoAP header
-         coap_header->Code                = COAP_CODE_RESP_CHANGED;
-         
-         outcome                          = E_SUCCESS;
-         break;
-         
-      default:
-         outcome                          = E_FAIL;
-         break;
-   }
-   
-   return outcome;
+    return size;
 }
 
-/**
-\brief The stack indicates that the packet was sent.
+uint8_t sens_itf_unpack_cmd_req(sens_itf_cmd_req_t *cmd, uint8_t *frame, uint8_t frame_size)
+{
+    uint8_t *buf = frame;
+    uint16_t crc;
+    uint16_t frame_crc;
+    uint8_t size;
 
-\param[in] msg The CoAP message just sent.
-\param[in] error The outcome of sending it.
-*/
-void sens_itf_sendDone(OpenQueueEntry_t* msg, owerror_t error) {
-   openqueue_freePacketBuffer(msg);
+    if (frame_size < 3)
+    {
+        OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Invalid frame size %d", frame_size));
+        return 0;
+    }
+    
+    // minimal header decoding
+    cmd->hdr.size = buf_io_get8_fl_ap(buf);
+    cmd->hdr.addr = buf_io_get8_fl_ap(buf);
+
+    frame_crc = buf_io_get16_fl(&frame[cmd->hdr.size]);
+    crc = crc16_calc(frame, cmd->hdr.size);
+    cmd->crc = frame_crc;
+
+    if (frame_crc != crc)
+    {
+        OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Invalid CRC %04X <> %04X", frame_crc, crc));
+        return 0;
+    }
+    
+    switch (cmd->hdr.addr)
+    {
+    case SENS_ITF_REGMAP_BRD_CMD:
+        cmd->payload.command_cmd.cmd = buf_io_get8_fl_ap(buf);
+        break;
+    case SENS_ITF_REGMAP_WRITE_BAT_STATUS:
+        cmd->payload.bat_status_cmd.status = buf_io_get8_fl_ap(buf);
+        break;
+    case SENS_ITF_REGMAP_WRITE_BAT_CHARGE:
+        cmd->payload.bat_charge_cmd.charge = buf_io_get8_fl_ap(buf);
+        break;
+    case SENS_ITF_REGMAP_DSP_WRITE:
+        cmd->payload.write_display_cmd.line = buf_io_get8_fl_ap(buf);
+        memcpy(cmd->payload.write_display_cmd.msg,buf,SENS_ITF_DSP_MSG_MAX_SIZE);
+        buf += SENS_ITF_DSP_MSG_MAX_SIZE;
+        break;
+    case SENS_ITF_REGMAP_WPAN_STATUS:
+        cmd->payload.wpan_status_cmd.status = buf_io_get8_fl_ap(buf);
+        break;
+    case SENS_ITF_REGMAP_WPAN_STRENGTH:
+        cmd->payload.wpan_strength_cmd.strenght = buf_io_get8_fl_ap(buf);
+        break;
+    default:
+        break;
+    }
+
+    if ((cmd->hdr.addr >= SENS_ITF_REGMAP_WRITE_POINT_DATA_1) && 
+        (cmd->hdr.addr <= SENS_ITF_REGMAP_WRITE_POINT_DATA_32))
+    {
+        //uint8_t point = cmd->hdr.addr - SENS_ITF_REGMAP_WRITE_POINT_DATA_1;
+        cmd->payload.point_value_cmd.type =  buf_io_get8_fl_ap(buf);
+        buf += sens_itf_unpack_point_value(&cmd->payload.point_value_cmd, buf);
+    }
+
+    size = cmd->hdr.size + 2; // + crc 
+    return size;
+}
+
+uint8_t sens_itf_pack_cmd_res(sens_itf_cmd_res_t *cmd, uint8_t *frame)
+{
+    uint8_t *buf = &frame[1];
+    uint8_t size = 0;
+    uint16_t crc;
+
+    buf_io_put8_tl_ap(cmd->hdr.addr, buf);
+    buf_io_put8_tl_ap(cmd->hdr.status, buf);
+
+    // only fill command when status is OK, otherwise an error will be reported
+    if (cmd->hdr.status == SENS_ITF_ANS_OK)
+    {
+        switch (cmd->hdr.addr)
+        {
+        case SENS_ITF_REGMAP_ITF_VERSION:
+            buf_io_put8_tl_ap(cmd->payload.itf_version_cmd.version, buf);
+            break;
+        case SENS_ITF_REGMAP_BRD_ID:
+            memcpy(buf, cmd->payload.brd_id_cmd.model, SENS_ITF_MODEL_NAME_SIZE);
+            buf += SENS_ITF_MODEL_NAME_SIZE;
+            memcpy(buf, cmd->payload.brd_id_cmd.manufactor, SENS_ITF_MANUF_NAME_SIZE);
+            buf += SENS_ITF_MODEL_NAME_SIZE;
+            buf_io_put32_tl_ap(cmd->payload.brd_id_cmd.sensor_id, buf);
+            buf_io_put8_tl_ap(cmd->payload.brd_id_cmd.hardware_revision, buf);
+            buf_io_put8_tl_ap(cmd->payload.brd_id_cmd.num_of_points, buf);
+            buf_io_put8_tl_ap(cmd->payload.brd_id_cmd.cabalities, buf);
+            break;
+        case SENS_ITF_REGMAP_BRD_STATUS:
+            buf_io_put8_tl_ap(cmd->payload.brd_status_cmd.status, buf);
+            break;
+        case SENS_ITF_REGMAP_BRD_CMD:
+            buf_io_put8_tl_ap(cmd->payload.command_res_cmd.status, buf);
+            break;
+        case SENS_ITF_REGMAP_READ_BAT_STATUS:
+            buf_io_put8_tl_ap(cmd->payload.bat_status_cmd.status, buf);
+            break;
+        case SENS_ITF_REGMAP_READ_BAT_CHARGE:
+            buf_io_put8_tl_ap(cmd->payload.bat_charge_cmd.charge, buf);
+            break;
+        case SENS_ITF_REGMAP_SVR_MAIN_ADDR:
+        case SENS_ITF_REGMAP_SVR_SEC_ADDR:
+            memcpy(buf, cmd->payload.svr_addr_cmd.addr, SENS_ITF_SERVER_ADDR_SIZE);
+            buf += SENS_ITF_SERVER_ADDR_SIZE;
+            break;
+        default:
+            break;
+        }
+
+        if ((cmd->hdr.addr >= SENS_ITF_REGMAP_POINT_DESC_1) &&
+            (cmd->hdr.addr <= SENS_ITF_REGMAP_POINT_DESC_32))
+        {
+            //uint8_t point = cmd->hdr.addr - SENS_ITF_REGMAP_POINT_DESC_1;
+            memcpy(buf, cmd->payload.point_desc_cmd.name, SENS_ITF_POINT_NAME_SIZE);
+            buf += SENS_ITF_POINT_NAME_SIZE;
+            buf_io_put8_tl_ap(cmd->payload.point_desc_cmd.type, buf);
+            buf_io_put8_tl_ap(cmd->payload.point_desc_cmd.unit, buf);
+            buf_io_put8_tl_ap(cmd->payload.point_desc_cmd.access_rights, buf);
+            buf_io_put32_tl_ap(cmd->payload.point_desc_cmd.sampling_time_x250ms, buf);
+        }
+
+        if ((cmd->hdr.addr >= SENS_ITF_REGMAP_READ_POINT_DATA_1) &&
+            (cmd->hdr.addr <= SENS_ITF_REGMAP_READ_POINT_DATA_32))
+        {
+            //uint8_t point = cmd->hdr.addr - SENS_ITF_REGMAP_READ_POINT_DATA_1;
+            buf_io_put8_tl_ap(cmd->payload.point_value_cmd.type,buf);
+            buf += sens_itf_pack_point_value(&cmd->payload.point_value_cmd, buf);
+        }
+    }
+
+    size = buf - frame;
+    buf_io_put8_tl(size, frame);
+    crc = crc16_calc(frame, size);
+    cmd->crc = crc;
+    cmd->hdr.size = size;
+    buf_io_put16_tl(crc, buf);
+    
+    size += 2; // +crc 
+    return size;
+}
+
+
+uint8_t sens_itf_unpack_cmd_res(sens_itf_cmd_res_t * cmd, uint8_t *frame, uint8_t frame_size)
+{
+    uint8_t size;
+    uint8_t *buf = frame;
+    uint16_t crc;
+    uint16_t frame_crc;
+
+    if (frame_size < 3)
+    {
+        cmd->hdr.status = SENS_ITF_ANS_ERROR;
+        return 0;
+    }
+    
+    // minimal header decoding
+    cmd->hdr.size = buf_io_get8_fl_ap(buf);
+    cmd->hdr.addr = buf_io_get8_fl_ap(buf);
+    cmd->hdr.status = buf_io_get8_fl_ap(buf);
+
+    frame_crc = buf_io_get16_fl(&frame[cmd->hdr.size]);
+    crc = crc16_calc(frame, cmd->hdr.size);
+    cmd->crc = frame_crc;
+
+    if (frame_crc != crc)
+    {
+        OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Invalid CRC %04X <> %04X", frame_crc, crc));
+        cmd->hdr.status = SENS_ITF_ANS_CRC_ERROR;
+        return 0;
+    }
+
+    if (cmd->hdr.status != SENS_ITF_ANS_OK)
+    {
+        OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Response error %d", cmd->hdr.status));
+        return 0;
+    }
+
+    switch (cmd->hdr.addr)
+    {
+    case SENS_ITF_REGMAP_ITF_VERSION:
+        cmd->payload.itf_version_cmd.version = buf_io_get8_fl_ap(buf);
+        break;
+    case SENS_ITF_REGMAP_BRD_ID:
+        memcpy(cmd->payload.brd_id_cmd.model, buf, SENS_ITF_MODEL_NAME_SIZE);
+        buf += SENS_ITF_MODEL_NAME_SIZE;
+        memcpy(cmd->payload.brd_id_cmd.manufactor, buf, SENS_ITF_MANUF_NAME_SIZE);
+        buf += SENS_ITF_MODEL_NAME_SIZE;
+        cmd->payload.brd_id_cmd.sensor_id = buf_io_get32_fl_ap(buf);
+        cmd->payload.brd_id_cmd.hardware_revision = buf_io_get8_fl_ap(buf);
+        cmd->payload.brd_id_cmd.num_of_points = buf_io_get8_fl_ap(buf);
+        cmd->payload.brd_id_cmd.cabalities = buf_io_get8_fl_ap(buf);
+        break;
+    case SENS_ITF_REGMAP_BRD_STATUS:
+        cmd->payload.brd_status_cmd.status = buf_io_get8_fl_ap(buf);
+        break;
+    case SENS_ITF_REGMAP_BRD_CMD:
+        cmd->payload.command_res_cmd.status = buf_io_get8_fl_ap(buf);
+        break;
+    case SENS_ITF_REGMAP_READ_BAT_STATUS:
+        cmd->payload.bat_status_cmd.status = buf_io_get8_fl_ap(buf);
+        break;
+    case SENS_ITF_REGMAP_READ_BAT_CHARGE:
+        cmd->payload.bat_charge_cmd.charge = buf_io_get8_fl_ap(buf);
+        break;
+    case SENS_ITF_REGMAP_SVR_MAIN_ADDR:
+    case SENS_ITF_REGMAP_SVR_SEC_ADDR:
+        memcpy(cmd->payload.svr_addr_cmd.addr, buf, SENS_ITF_SERVER_ADDR_SIZE);
+        buf += SENS_ITF_SERVER_ADDR_SIZE;
+        break;
+    default:
+        break;
+    }
+
+    if ((cmd->hdr.addr >= SENS_ITF_REGMAP_POINT_DESC_1) && 
+        (cmd->hdr.addr <= SENS_ITF_REGMAP_POINT_DESC_32))
+    {
+        memcpy(cmd->payload.point_desc_cmd.name, buf, SENS_ITF_POINT_NAME_SIZE);
+        buf += SENS_ITF_POINT_NAME_SIZE;
+        cmd->payload.point_desc_cmd.type = buf_io_get8_fl_ap(buf);
+        cmd->payload.point_desc_cmd.unit = buf_io_get8_fl_ap(buf);
+        cmd->payload.point_desc_cmd.access_rights = buf_io_get8_fl_ap(buf);
+        cmd->payload.point_desc_cmd.sampling_time_x250ms = buf_io_get32_fl_ap(buf);
+    }
+
+    if ((cmd->hdr.addr >= SENS_ITF_REGMAP_READ_POINT_DATA_1) &&
+        (cmd->hdr.addr <= SENS_ITF_REGMAP_READ_POINT_DATA_32))
+    {
+        cmd->payload.point_value_cmd.type = buf_io_get8_fl_ap(buf);
+        buf += sens_itf_unpack_point_value(&cmd->payload.point_value_cmd, buf);
+    }
+
+    size = cmd->hdr.size + 2; // crc 
+    return size;
+}
+
+uint8_t sens_itf_pack_cmd_req(sens_itf_cmd_req_t *cmd, uint8_t *frame)
+{
+    uint8_t *buf = &frame[1];
+    uint8_t size = 0;
+    uint16_t crc;
+
+    // address
+    // commands without arguments are handled only with this line
+    buf_io_put8_tl_ap(cmd->hdr.addr, buf);
+    
+    switch (cmd->hdr.addr)
+    {
+    case SENS_ITF_REGMAP_BRD_CMD:
+        buf_io_put8_tl_ap(cmd->payload.command_cmd.cmd, buf);
+        break;
+    case SENS_ITF_REGMAP_WRITE_BAT_STATUS:
+        buf_io_put8_tl_ap(cmd->payload.bat_status_cmd.status, buf);
+        break;
+    case SENS_ITF_REGMAP_WRITE_BAT_CHARGE:
+        buf_io_put8_tl_ap(cmd->payload.bat_charge_cmd.charge, buf);
+        break;
+    case SENS_ITF_REGMAP_DSP_WRITE:
+        buf_io_put8_tl_ap(cmd->payload.write_display_cmd.line, buf);
+        memcpy(buf, cmd->payload.write_display_cmd.msg, SENS_ITF_DSP_MSG_MAX_SIZE);
+        buf += SENS_ITF_DSP_MSG_MAX_SIZE;
+        break;
+    case SENS_ITF_REGMAP_WPAN_STATUS:
+        buf_io_put8_tl_ap(cmd->payload.wpan_status_cmd.status,buf);
+        break;
+    case SENS_ITF_REGMAP_WPAN_STRENGTH:
+        buf_io_put8_tl_ap(cmd->payload.wpan_strength_cmd.strenght,buf);
+        break;
+    default:
+        break;
+    }
+
+    if ((cmd->hdr.addr >= SENS_ITF_REGMAP_WRITE_POINT_DATA_1) && 
+        (cmd->hdr.addr <= SENS_ITF_REGMAP_WRITE_POINT_DATA_32))
+    {
+        buf_io_put8_tl_ap(cmd->payload.point_value_cmd.type, buf);
+        buf += sens_itf_pack_point_value(&cmd->payload.point_value_cmd, buf);
+    }
+
+    size = buf - frame;
+    buf_io_put8_tl(size, frame);
+    crc = crc16_calc(frame, size);
+    cmd->crc = crc;
+    cmd->hdr.size = size;
+    buf_io_put16_tl(crc, buf);
+
+    size += 2; // + crc
+
+    return size;
 }
