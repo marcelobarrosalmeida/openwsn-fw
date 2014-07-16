@@ -412,8 +412,6 @@ static void sens_itf_sensor_rx_byte(void)
     // ENABLE INTERRUPTS
 }
 
-
-
 void sens_itf_mote_init(void)
 {
     uint8_t n;
