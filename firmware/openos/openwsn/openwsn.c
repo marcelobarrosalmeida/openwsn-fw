@@ -69,7 +69,9 @@
 //#include "rxl1.h"
 //#include "heli.h"
 //#include "imu.h"
+#include "sens_itf_core.h"
 #include "sens_itf.h"
+
 //=========================== variables =======================================
 
 //=========================== prototypes ======================================
@@ -137,7 +139,7 @@ void openwsn_init() {
    rinfo_init();
    rrt_init();
    rleds__init();
-   sens_itf_init();
+   sens_itf_core_init();
    rwellknown_init();
    r6t_init();
    //rreg_init();

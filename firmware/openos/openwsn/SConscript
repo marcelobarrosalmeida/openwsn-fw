@@ -58,6 +58,10 @@ sources_c = [
     os.path.join('07-App','udplatency','udplatency.c'),
     os.path.join('07-App','udpstorm','udpstorm.c'),
     os.path.join('07-App','sens_itf','sens_itf.c'),
+    os.path.join('07-App','sens_itf','buf_io.c'),
+    os.path.join('07-App','sens_itf','crc16.c'),
+    os.path.join('07-App','sens_itf','sens_itf_mote.c'),
+    os.path.join('07-App','sens_itf','sens_itf_core.c'),
     #=== cross-layers
     os.path.join('cross-layers','idmanager.c'),
     os.path.join('cross-layers','openqueue.c'),
@@ -117,6 +121,9 @@ sources_h = [
     os.path.join('07-App','udplatency','udplatency.h'),
     os.path.join('07-App','udpstorm','udpstorm.h'),
     os.path.join('07-App','sens_itf','sens_itf.h'),
+    os.path.join('07-App','sens_itf','buf_io.h'),
+    os.path.join('07-App','sens_itf','crc16.h'),   
+    os.path.join('07-App','sens_itf','sens_itf_core.h'),
     #=== cross-layers
     os.path.join('cross-layers','idmanager.h'),
     os.path.join('cross-layers','openqueue.h'),
@@ -127,6 +134,7 @@ sources_h = [
 if localEnv['board']=='python':
     
     for s in sources_c+sources_h:
+        print s
         temp = localEnv.Objectify(
             target = localEnv.ObjectifiedFilename(s),
             source = s,

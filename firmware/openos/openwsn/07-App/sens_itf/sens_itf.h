@@ -384,17 +384,16 @@ typedef struct sens_itf_cmd_res_s
 //extern uint8_t sens_itf_send_cmd(sens_itf_cmd_req_t * cmd, sens_itf_cmd_res_t * ans);
 //extern int sens_itf_send_cmd_async(const sens_itf_cmd_req_t * const cmd, const sens_itf_cmd_res_t * ans);
 
-extern uint8_t sens_itf_mote_init(void);
-extern uint8_t sens_itf_sensor_init(void);
-extern void sens_itf_mote_main(void);
+uint8_t sens_itf_mote_init(void);
+uint8_t sens_itf_sensor_init(void);
 
-extern uint8_t sens_itf_unpack_point_value(sens_itf_cmd_point_t *point, uint8_t *buf);
-extern uint8_t sens_itf_pack_point_value(const sens_itf_cmd_point_t *point, uint8_t *buf);
+uint8_t sens_itf_unpack_point_value(sens_itf_cmd_point_t *point, uint8_t *buf);
+uint8_t sens_itf_pack_point_value(const sens_itf_cmd_point_t *point, uint8_t *buf);
 
-extern uint8_t sens_itf_unpack_cmd_res(sens_itf_cmd_res_t *cmd, uint8_t *frame, uint8_t frame_size);
-extern uint8_t sens_itf_unpack_cmd_req(sens_itf_cmd_req_t *cmd, uint8_t *frame, uint8_t frame_size);
-extern uint8_t sens_itf_pack_cmd_res  (sens_itf_cmd_res_t *cmd, uint8_t *frame);
-extern uint8_t sens_itf_pack_cmd_req  (sens_itf_cmd_req_t *cmd, uint8_t *frame);
+uint8_t sens_itf_unpack_cmd_res(sens_itf_cmd_res_t *cmd, uint8_t *frame, uint8_t frame_size);
+uint8_t sens_itf_unpack_cmd_req(sens_itf_cmd_req_t *cmd, uint8_t *frame, uint8_t frame_size);
+uint8_t sens_itf_pack_cmd_res  (sens_itf_cmd_res_t *cmd, uint8_t *frame);
+uint8_t sens_itf_pack_cmd_req  (sens_itf_cmd_req_t *cmd, uint8_t *frame);
 
 #ifdef __cplusplus
 }

@@ -1,11 +1,9 @@
+#include "openwsn.h"
 #include <string.h>
 #include <stdint.h>
 #include "sens_itf.h"
-#include "../os/os_defs.h"
-#include "../os/os_timer.h"
-#include "../os/os_util.h"
-#include "../util/buf_io.h"
-#include "../util/crc16.h"
+#include "buf_io.h"
+#include "crc16.h"
 
 #define SENS_ITF_DBG_FRAME 1
 
@@ -124,7 +122,7 @@ uint8_t sens_itf_unpack_cmd_req(sens_itf_cmd_req_t *cmd, uint8_t *frame, uint8_t
 
     if (frame_size < 3)
     {
-        OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Invalid frame size %d", frame_size));
+        //OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Invalid frame size %d", frame_size));
         return 0;
     }
     
@@ -138,7 +136,7 @@ uint8_t sens_itf_unpack_cmd_req(sens_itf_cmd_req_t *cmd, uint8_t *frame, uint8_t
 
     if (frame_crc != crc)
     {
-        OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Invalid CRC %04X <> %04X", frame_crc, crc));
+        //OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Invalid CRC %04X <> %04X", frame_crc, crc));
         return 0;
     }
     
@@ -285,14 +283,14 @@ uint8_t sens_itf_unpack_cmd_res(sens_itf_cmd_res_t * cmd, uint8_t *frame, uint8_
 
     if (frame_crc != crc)
     {
-        OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Invalid CRC %04X <> %04X", frame_crc, crc));
+        //OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Invalid CRC %04X <> %04X", frame_crc, crc));
         cmd->hdr.status = SENS_ITF_ANS_CRC_ERROR;
         return 0;
     }
 
     if (cmd->hdr.status != SENS_ITF_ANS_OK)
     {
-        OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Response error %d", cmd->hdr.status));
+        //OS_UTIL_LOG(SENS_ITF_DBG_FRAME, ("Response error %d", cmd->hdr.status));
         return 0;
     }
 
