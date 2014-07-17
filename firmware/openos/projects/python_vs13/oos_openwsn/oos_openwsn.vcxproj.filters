@@ -1,187 +1,486 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Original">
+      <UniqueIdentifier>{ba73ddd4-78f1-4b38-ad85-75e1cffce56c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\bsp">
+      <UniqueIdentifier>{e406e412-c188-43b9-91bd-dc4f0c6a8ce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\projects">
+      <UniqueIdentifier>{b50bf7c8-9d90-4469-8acc-50382f2978ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\openwsn">
+      <UniqueIdentifier>{a527e076-7fce-457b-9021-45643564e596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\kernel">
+      <UniqueIdentifier>{79c58e9d-22f4-412f-a3e8-fdb7b7625cd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\bsp">
+      <UniqueIdentifier>{acf531f3-146a-428a-aa4b-0c34da231455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\kernel">
+      <UniqueIdentifier>{e0e2705e-ac30-4a38-90b7-b8b3379bbedd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\projects">
+      <UniqueIdentifier>{aa3ea424-474a-4abe-ad41-f6a8d8469eb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\openwsn">
+      <UniqueIdentifier>{4b10c7fa-cde4-452a-baa5-5ead4140cea8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\bsp\boards">
+      <UniqueIdentifier>{0d2c191a-07ef-487c-9928-c0fc96800b30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\bsp\boards">
+      <UniqueIdentifier>{2daa180f-25e7-400f-bf00-9caf45562e5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\bsp\boards\python">
+      <UniqueIdentifier>{35628e59-e3b6-467d-89c0-9df45fb8055b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\bsp\boards\python">
+      <UniqueIdentifier>{7dde5fb9-2fe7-4435-a51f-3e142a2a455d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\kernel\openos">
+      <UniqueIdentifier>{d143fa4c-a10d-4796-a576-13bde6f7e8dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\kernel\openos">
+      <UniqueIdentifier>{0908898d-9b67-42d8-92c8-d819dd15c71b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\drivers">
+      <UniqueIdentifier>{a2e97564-440d-4b3f-b841-c3c70b101c52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\drivers">
+      <UniqueIdentifier>{ac824c3b-a487-4c04-a6c0-cd7ed7391bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\drivers\common">
+      <UniqueIdentifier>{8d83de36-f7f0-4c8e-ab4f-91459c97c62b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\drivers\common">
+      <UniqueIdentifier>{fdffcee2-d434-4e78-ae6a-1a11d254c1cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\openwsn\02a-MAClow">
+      <UniqueIdentifier>{791927b2-7c11-4a62-97aa-6ee13eb17d20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\openwsn\02b-MAChigh">
+      <UniqueIdentifier>{e207022d-42e5-4d0b-8919-94e1fa5fdbf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\openwsn\03a-IPHC">
+      <UniqueIdentifier>{711f2085-29ff-4216-81ce-f26248b08c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\openwsn\03b-IPv6">
+      <UniqueIdentifier>{f6e37d3c-97ee-4a7c-aac9-95a269ca44e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\openwsn\04-TRAN">
+      <UniqueIdentifier>{dd9f43a1-d906-42c5-8bd1-c687f7347a4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\openwsn\07-App">
+      <UniqueIdentifier>{c2742eac-b293-4e87-a273-dda649f0ccfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\openwsn\cross-layers">
+      <UniqueIdentifier>{7d892929-e586-41e4-a521-98456eeafb65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\openwsn\02a-MAClow">
+      <UniqueIdentifier>{715b45c7-2a61-479d-b746-fdf3b506811b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\openwsn\02b-MAChigh">
+      <UniqueIdentifier>{4d9b4810-437d-43bb-9113-52ec6075ec3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\openwsn\03a-IPHC">
+      <UniqueIdentifier>{f51aee55-e695-429a-9eda-6cf518938630}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\openwsn\03b-IPv6">
+      <UniqueIdentifier>{b14f1fea-1b1e-4161-9a51-c7803abc5c22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\openwsn\04-TRAN">
+      <UniqueIdentifier>{24c4db73-9561-48ab-9d7b-a54baf56f016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\openwsn\07-App">
+      <UniqueIdentifier>{92b32876-f6fa-46d0-91cf-014c293d00f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\openwsn\cross-layers">
+      <UniqueIdentifier>{627e0958-3dcf-4387-b417-5a14ccf78423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\openwsn\07-App\sens_itf">
+      <UniqueIdentifier>{f03e1751-8f24-41d8-9ea8-dd4df9bce77a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\openwsn\07-App\sens_itf">
+      <UniqueIdentifier>{a3731558-b926-4d70-8785-c81e92b5f6d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated\openwsn\07-App\others">
+      <UniqueIdentifier>{d8e64707-dff5-495b-afd8-25a04d40d064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Original\openwsn\07-App\others">
+      <UniqueIdentifier>{33a4b226-8d9d-40e2-b667-bc5775e21c99}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\common\03oos_openwsn\03oos_openwsn_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\adaptive_sync_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\bsp\boards\python\board_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\bsp\boards\python</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\bsp\boards\python\bsp_timer_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\bsp\boards\python</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\bsp\boards\python\debugpins_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\bsp\boards\python</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\bsp\boards\python\eui64_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\forwarding_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\icmpv6_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\icmpv6echo_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\icmpv6rpl_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\idmanager_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\IEEE802154_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\IEEE802154E_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03a-IPHC\iphc_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\layerdebug\layerdebug_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\bsp\boards\python</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\bsp\boards\python\leds_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\neighbors_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\ohlone\ohlone_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\ohlone\ohlone_webpages_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03a-IPHC\openbridge_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\04-TRAN\opencoap_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\drivers\common\openhdlc_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\openqueue_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\openrandom_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\drivers\common\openserial_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\04-TRAN\opentcp_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\drivers\common\opentimers_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\04-TRAN\openudp_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\openwsn_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\bsp\boards\python</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\bsp\boards\python\openwsnmodule_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\packetfunctions_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\r6t\r6t_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\bsp\boards\python</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\bsp\boards\python\radio_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\bsp\boards\python</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\bsp\boards\python\radiotimer_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\res_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rex\rex_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rinfo\rinfo_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rleds\rleds_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rreg\rreg_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rrt\rrt_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rwellknown\rwellknown_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\schedule_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\kernel\openos\scheduler_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf\sens_itf_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\bsp\boards\python</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\bsp\boards\python\supply_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\tcpecho\tcpecho_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\tcpinject\tcpinject_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\tcpprint\tcpprint_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\topology_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\bsp\boards\python</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\bsp\boards\python\uart_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\bsp\boards\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\bsp\boards\python\board_obj.c">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\bsp\boards\python\bsp_timer_obj.c">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\bsp\boards\python\debugpins_obj.c">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\bsp\boards\python\eui64_obj.c">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\bsp\boards\python\leds_obj.c">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\bsp\boards\python\openwsnmodule.c">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\bsp\boards\python\radio_obj.c">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\bsp\boards\python\radiotimer_obj.c">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\bsp\boards\python\supply_obj.c">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\bsp\boards\python\uart_obj.c">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\kernel\openos\scheduler.c">
+      <Filter>Original\kernel\openos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\kernel\openos\scheduler_obj.c">
+      <Filter>Generated\kernel\openos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\drivers\common\openserial.c">
+      <Filter>Original\drivers\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\drivers\common\opentimers.c">
+      <Filter>Original\drivers\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\drivers\common\openhdlc.c">
+      <Filter>Original\drivers\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\drivers\common\openhdlc_obj.c">
+      <Filter>Generated\drivers\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\drivers\common\openserial_obj.c">
+      <Filter>Generated\drivers\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\drivers\common\opentimers_obj.c">
+      <Filter>Generated\drivers\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\openwsn_obj.c">
+      <Filter>Generated\openwsn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\adaptive_sync_obj.c">
+      <Filter>Generated\openwsn\02a-MAClow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\IEEE802154E_obj.c">
+      <Filter>Generated\openwsn\02a-MAClow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\IEEE802154_obj.c">
+      <Filter>Generated\openwsn\02a-MAClow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\topology_obj.c">
+      <Filter>Generated\openwsn\02a-MAClow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\neighbors_obj.c">
+      <Filter>Generated\openwsn\02b-MAChigh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\res_obj.c">
+      <Filter>Generated\openwsn\02b-MAChigh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\schedule_obj.c">
+      <Filter>Generated\openwsn\02b-MAChigh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03a-IPHC\openbridge_obj.c">
+      <Filter>Generated\openwsn\03a-IPHC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03a-IPHC\iphc_obj.c">
+      <Filter>Generated\openwsn\03a-IPHC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\forwarding_obj.c">
+      <Filter>Generated\openwsn\03b-IPv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\icmpv6_obj.c">
+      <Filter>Generated\openwsn\03b-IPv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\icmpv6echo_obj.c">
+      <Filter>Generated\openwsn\03b-IPv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\icmpv6rpl_obj.c">
+      <Filter>Generated\openwsn\03b-IPv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\04-TRAN\opencoap_obj.c">
+      <Filter>Generated\openwsn\04-TRAN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\04-TRAN\opentcp_obj.c">
+      <Filter>Generated\openwsn\04-TRAN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\04-TRAN\openudp_obj.c">
+      <Filter>Generated\openwsn\04-TRAN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\04-TRAN\rsvp_obj.c">
+      <Filter>Generated\openwsn\04-TRAN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\03oos_openwsn\03oos_openwsn_obj.c">
+      <Filter>Generated\projects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\idmanager_obj.c">
+      <Filter>Generated\openwsn\cross-layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\openqueue_obj.c">
+      <Filter>Generated\openwsn\cross-layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\openrandom_obj.c">
+      <Filter>Generated\openwsn\cross-layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\packetfunctions_obj.c">
+      <Filter>Generated\openwsn\cross-layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\02a-MAClow\adaptive_sync.c">
+      <Filter>Original\openwsn\02a-MAClow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\02a-MAClow\IEEE802154.c">
+      <Filter>Original\openwsn\02a-MAClow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\02a-MAClow\IEEE802154E.c">
+      <Filter>Original\openwsn\02a-MAClow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\02a-MAClow\topology.c">
+      <Filter>Original\openwsn\02a-MAClow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\02b-MAChigh\neighbors.c">
+      <Filter>Original\openwsn\02b-MAChigh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\02b-MAChigh\res.c">
+      <Filter>Original\openwsn\02b-MAChigh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\02b-MAChigh\schedule.c">
+      <Filter>Original\openwsn\02b-MAChigh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\03a-IPHC\iphc.c">
+      <Filter>Original\openwsn\03a-IPHC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\03a-IPHC\openbridge.c">
+      <Filter>Original\openwsn\03a-IPHC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\03b-IPv6\icmpv6rpl.c">
+      <Filter>Original\openwsn\03b-IPv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\03b-IPv6\forwarding.c">
+      <Filter>Original\openwsn\03b-IPv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\03b-IPv6\icmpv6.c">
+      <Filter>Original\openwsn\03b-IPv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\03b-IPv6\icmpv6echo.c">
+      <Filter>Original\openwsn\03b-IPv6</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\04-TRAN\opencoap.c">
+      <Filter>Original\openwsn\04-TRAN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\04-TRAN\opentcp.c">
+      <Filter>Original\openwsn\04-TRAN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\04-TRAN\openudp.c">
+      <Filter>Original\openwsn\04-TRAN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\04-TRAN\rsvp.c">
+      <Filter>Original\openwsn\04-TRAN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\cross-layers\idmanager.c">
+      <Filter>Original\openwsn\cross-layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\cross-layers\openqueue.c">
+      <Filter>Original\openwsn\cross-layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\cross-layers\openrandom.c">
+      <Filter>Original\openwsn\cross-layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\cross-layers\packetfunctions.c">
+      <Filter>Original\openwsn\cross-layers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\sens_itf\sens_itf_mote.c">
+      <Filter>Original\openwsn\07-App\sens_itf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\sens_itf\buf_io.c">
+      <Filter>Original\openwsn\07-App\sens_itf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\sens_itf\crc16.c">
+      <Filter>Original\openwsn\07-App\sens_itf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\sens_itf\sens_itf.c">
+      <Filter>Original\openwsn\07-App\sens_itf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\sens_itf\sens_itf_core.c">
+      <Filter>Original\openwsn\07-App\sens_itf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf\buf_io_obj.c">
+      <Filter>Generated\openwsn\07-App\sens_itf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf\crc16_obj.c">
+      <Filter>Generated\openwsn\07-App\sens_itf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf\sens_itf_core_obj.c">
+      <Filter>Generated\openwsn\07-App\sens_itf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf\sens_itf_mote_obj.c">
+      <Filter>Generated\openwsn\07-App\sens_itf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf\sens_itf_obj.c">
+      <Filter>Generated\openwsn\07-App\sens_itf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\layerdebug\layerdebug_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\ohlone\ohlone_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\ohlone\ohlone_webpages_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\r6t\r6t_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rex\rex_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rinfo\rinfo_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rleds\rleds_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rreg\rreg_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rrt\rrt_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rwellknown\rwellknown_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\tcpecho\tcpecho_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\tcpinject\tcpinject_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\tcpprint\tcpprint_obj.c">
+      <Filter>Generated\openwsn\07-App\others</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\udpecho\udpecho_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\openwsn\07-App\others</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\udpinject\udpinject_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\openwsn\07-App\others</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\udplatency\udplatency_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\openwsn\07-App\others</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\udpprint\udpprint_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\openwsn\07-App\others</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\udprand\udprand_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\openwsn\07-App\others</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\udpstorm\udpstorm_obj.c">
-      <Filter>Source Files</Filter>
+      <Filter>Generated\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\layerdebug\layerdebug.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\ohlone\ohlone.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\ohlone\ohlone_webpages.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\r6t\r6t.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\rex\rex.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\rinfo\rinfo.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\rleds\rleds.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\rreg\rreg.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\rrt\rrt.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\rwellknown\rwellknown.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\tcpecho\tcpecho.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\tcpinject\tcpinject.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\tcpprint\tcpprint.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\udpecho\udpecho.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\udpinject\udpinject.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\udplatency\udplatency.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\udpprint\udpprint.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\udprand\udprand.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openwsn\07-App\udpstorm\udpstorm.c">
+      <Filter>Original\openwsn\07-App\others</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,8 +490,328 @@
     <ClInclude Include="..\..\..\build\python_gcc\openwsn\07-App\tcpecho\tcpecho.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\board.h">
+      <Filter>Generated\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\bsp_timer.h">
+      <Filter>Generated\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\debugpins.h">
+      <Filter>Generated\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\eui64.h">
+      <Filter>Generated\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\leds.h">
+      <Filter>Generated\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\radio.h">
+      <Filter>Generated\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\radiotimer.h">
+      <Filter>Generated\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\uart.h">
+      <Filter>Generated\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\board_obj.h">
+      <Filter>Generated\bsp\boards\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\bsp_timer_obj.h">
+      <Filter>Generated\bsp\boards\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\debugpins_obj.h">
+      <Filter>Generated\bsp\boards\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\eui64_obj.h">
+      <Filter>Generated\bsp\boards\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\leds_obj.h">
+      <Filter>Generated\bsp\boards\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\radio_obj.h">
+      <Filter>Generated\bsp\boards\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\radiotimer_obj.h">
+      <Filter>Generated\bsp\boards\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\bsp\boards\uart_obj.h">
+      <Filter>Generated\bsp\boards\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\board.h">
+      <Filter>Original\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\bsp_timer.h">
+      <Filter>Original\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\debugpins.h">
+      <Filter>Original\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\eui64.h">
+      <Filter>Original\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\leds.h">
+      <Filter>Original\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\radio.h">
+      <Filter>Original\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\radiotimer.h">
+      <Filter>Original\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\sctimer.h">
+      <Filter>Original\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\uart.h">
+      <Filter>Original\bsp\boards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\python\board_info.h">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\python\openwsnmodule_obj.h">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\bsp\boards\python\supply_obj.h">
+      <Filter>Original\bsp\boards\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\kernel\openos\scheduler.h">
+      <Filter>Original\kernel\openos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\kernel\openos\scheduler_obj.h">
+      <Filter>Generated\kernel\openos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\drivers\common\opentimers.h">
+      <Filter>Original\drivers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\drivers\common\openhdlc.h">
+      <Filter>Original\drivers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\drivers\common\openserial.h">
+      <Filter>Original\drivers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\drivers\common\opentimers_obj.h">
+      <Filter>Generated\drivers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\drivers\common\openhdlc_obj.h">
+      <Filter>Generated\drivers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\drivers\common\openserial_obj.h">
+      <Filter>Generated\drivers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\openwsn_obj.h">
+      <Filter>Generated\openwsn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\adaptive_sync_obj.h">
+      <Filter>Generated\openwsn\02a-MAClow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\IEEE802154_obj.h">
+      <Filter>Generated\openwsn\02a-MAClow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\IEEE802154E_obj.h">
+      <Filter>Generated\openwsn\02a-MAClow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\topology_obj.h">
+      <Filter>Generated\openwsn\02a-MAClow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\neighbors_obj.h">
+      <Filter>Generated\openwsn\02b-MAChigh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\res_obj.h">
+      <Filter>Generated\openwsn\02b-MAChigh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\schedule_obj.h">
+      <Filter>Generated\openwsn\02b-MAChigh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\03a-IPHC\openbridge_obj.h">
+      <Filter>Generated\openwsn\03a-IPHC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\03a-IPHC\iphc_obj.h">
+      <Filter>Generated\openwsn\03a-IPHC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\forwarding_obj.h">
+      <Filter>Generated\openwsn\03b-IPv6</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\icmpv6_obj.h">
+      <Filter>Generated\openwsn\03b-IPv6</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\icmpv6echo_obj.h">
+      <Filter>Generated\openwsn\03b-IPv6</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\icmpv6rpl_obj.h">
+      <Filter>Generated\openwsn\03b-IPv6</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\04-TRAN\rsvp_obj.h">
+      <Filter>Generated\openwsn\04-TRAN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\04-TRAN\opencoap_obj.h">
+      <Filter>Generated\openwsn\04-TRAN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\04-TRAN\opentcp_obj.h">
+      <Filter>Generated\openwsn\04-TRAN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\04-TRAN\openudp_obj.h">
+      <Filter>Generated\openwsn\04-TRAN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\packetfunctions_obj.h">
+      <Filter>Generated\openwsn\cross-layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\idmanager_obj.h">
+      <Filter>Generated\openwsn\cross-layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\openqueue_obj.h">
+      <Filter>Generated\openwsn\cross-layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\cross-layers\openrandom_obj.h">
+      <Filter>Generated\openwsn\cross-layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\02a-MAClow\adaptive_sync.h">
+      <Filter>Original\openwsn\02a-MAClow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\02a-MAClow\IEEE802154.h">
+      <Filter>Original\openwsn\02a-MAClow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\02a-MAClow\IEEE802154E.h">
+      <Filter>Original\openwsn\02a-MAClow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\02a-MAClow\topology.h">
+      <Filter>Original\openwsn\02a-MAClow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\02b-MAChigh\neighbors.h">
+      <Filter>Original\openwsn\02b-MAChigh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\02b-MAChigh\res.h">
+      <Filter>Original\openwsn\02b-MAChigh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\02b-MAChigh\schedule.h">
+      <Filter>Original\openwsn\02b-MAChigh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\03a-IPHC\iphc.h">
+      <Filter>Original\openwsn\03a-IPHC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\03a-IPHC\openbridge.h">
+      <Filter>Original\openwsn\03a-IPHC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\03b-IPv6\icmpv6rpl.h">
+      <Filter>Original\openwsn\03b-IPv6</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\03b-IPv6\forwarding.h">
+      <Filter>Original\openwsn\03b-IPv6</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\03b-IPv6\icmpv6.h">
+      <Filter>Original\openwsn\03b-IPv6</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\03b-IPv6\icmpv6echo.h">
+      <Filter>Original\openwsn\03b-IPv6</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\04-TRAN\opencoap.h">
+      <Filter>Original\openwsn\04-TRAN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\04-TRAN\opentcp.h">
+      <Filter>Original\openwsn\04-TRAN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\04-TRAN\openudp.h">
+      <Filter>Original\openwsn\04-TRAN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\04-TRAN\rsvp.h">
+      <Filter>Original\openwsn\04-TRAN</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\cross-layers\idmanager.h">
+      <Filter>Original\openwsn\cross-layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\cross-layers\openqueue.h">
+      <Filter>Original\openwsn\cross-layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\cross-layers\openrandom.h">
+      <Filter>Original\openwsn\cross-layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\cross-layers\packetfunctions.h">
+      <Filter>Original\openwsn\cross-layers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\sens_itf\buf_io.h">
+      <Filter>Original\openwsn\07-App\sens_itf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\sens_itf\crc16.h">
+      <Filter>Original\openwsn\07-App\sens_itf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\sens_itf\sens_itf.h">
+      <Filter>Original\openwsn\07-App\sens_itf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\sens_itf\sens_itf_core.h">
+      <Filter>Original\openwsn\07-App\sens_itf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf\buf_io_obj.h">
+      <Filter>Generated\openwsn\07-App\sens_itf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf\crc16_obj.h">
+      <Filter>Generated\openwsn\07-App\sens_itf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf\sens_itf_core_obj.h">
+      <Filter>Generated\openwsn\07-App\sens_itf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\layerdebug\layerdebug.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\ohlone\ohlone.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\ohlone\ohlone_webpages.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\r6t\r6t.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\rex\rex.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\rinfo\rinfo.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\rleds\rleds.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\rreg\rreg.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\rrt\rrt.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\rwellknown\rwellknown.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\tcpecho\tcpecho.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\tcpinject\tcpinject.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\tcpprint\tcpprint.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\udpecho\udpecho.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\udpinject\udpinject.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\udplatency\udplatency.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\udpprint\udpprint.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\udprand\udprand.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openwsn\07-App\udpstorm\udpstorm.h">
+      <Filter>Original\openwsn\07-App\others</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme_debug.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\bsp\boards\python\SConscript">
+      <Filter>Original\bsp\boards\python</Filter>
+    </None>
   </ItemGroup>
 </Project>
