@@ -7,7 +7,8 @@
 extern "C" {
 #endif
 
-#define SENS_ITF_LATEST_VERSION     0
+#define SENS_ITF_LATEST_VERSION     1
+
 #define SENS_ITF_MAX_FRAME_SIZE   128
 #define SENS_ITF_DSP_MSG_MAX_SIZE  24
 #define SENS_ITF_MAX_POINTS        32
