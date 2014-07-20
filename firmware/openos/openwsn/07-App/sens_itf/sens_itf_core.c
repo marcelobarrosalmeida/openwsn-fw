@@ -23,8 +23,8 @@ static sens_itf_cmd_brd_id_t board_info;
 static sens_itf_point_ctrl_t sensor_points;
 #define SENS_ITF_SENSOR_NUM_OF_POINTS 5
 
-#include "adaptive_sync.h"
-extern adaptive_sync_vars_t adaptive_sync_vars;
+#include "IEEE802154E.h"
+extern ieee154e_vars_t    ieee154e_vars;
 
 void sens_itf_init_point_db(void)
 {
