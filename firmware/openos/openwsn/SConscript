@@ -134,7 +134,6 @@ sources_h = [
 if localEnv['board']=='python':
     
     for s in sources_c+sources_h:
-        print s
         temp = localEnv.Objectify(
             target = localEnv.ObjectifiedFilename(s),
             source = s,
