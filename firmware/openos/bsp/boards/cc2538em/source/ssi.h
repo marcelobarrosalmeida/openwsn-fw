@@ -53,7 +53,6 @@ extern "C"
 
 #include "hw_types.h"
 
-
 //*****************************************************************************
 //
 // Values that can be passed to SSIIntEnable, SSIIntDisable, and SSIIntClear
@@ -98,7 +97,6 @@ extern "C"
 #define SSI_CLOCK_SYSTEM        0x00000000
 #define SSI_CLOCK_PIOSC         0x00000001
 
-
 //*****************************************************************************
 //
 // Prototypes for the APIs.
@@ -126,7 +124,7 @@ extern void SSIDMADisable(uint32_t ui32Base, uint32_t ui32DMAFlags);
 extern bool SSIBusy(uint32_t ui32Base);
 extern void SSIClockSourceSet(uint32_t ui32Base, uint32_t ui32Source);
 extern uint32_t SSIClockSourceGet(uint32_t ui32Base);
-void spi_init(void);
+
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.

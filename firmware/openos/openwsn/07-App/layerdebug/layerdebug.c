@@ -54,7 +54,7 @@ void    layerdebug_sendDone(OpenQueueEntry_t* msg,
 
 //=========================== public ==========================================
 
-void layerdebug_init() {
+void layerdebug_init(void) {
    return;
 }
 

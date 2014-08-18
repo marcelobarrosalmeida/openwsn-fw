@@ -28,7 +28,7 @@
 
 //=========================== prototypes ======================================
 
-void bspDBpinToggle(uint32_t base,uint8_t ui8Pin);
+port_INLINE void bspDBpinToggle(uint32_t base,uint8_t ui8Pin);
 
 //=========================== public ==========================================
 
@@ -108,7 +108,7 @@ void debugpins_radio_set() {
 
 //------------ private ------------//
 
-void bspDBpinToggle(uint32_t base, uint8_t ui8Pin)
+port_INLINE void bspDBpinToggle(uint32_t base, uint8_t ui8Pin)
 {
     //
     // Get current pin values of selected bits

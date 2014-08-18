@@ -43,14 +43,14 @@ radio_vars_t radio_vars;
 
 //=========================== prototypes ======================================
 
-void     enable_radio_interrupts(void);
-void     disable_radio_interrupts(void);
+port_INLINE void     enable_radio_interrupts(void);
+port_INLINE void     disable_radio_interrupts(void);
 
-void     radio_on(void);
-void     radio_off(void);
+port_INLINE void     radio_on(void);
+port_INLINE void     radio_off(void);
 
-void     radio_error_isr(void);
-void     radio_isr_internal(void);
+port_INLINE void     radio_error_isr(void);
+port_INLINE void     radio_isr_internal(void);
 
 //=========================== public ==========================================
 
@@ -399,7 +399,7 @@ void radio_getReceivedFrame(uint8_t* pBufRead,
 
 //=========================== private =========================================
 
-void enable_radio_interrupts(void){
+port_INLINE  void enable_radio_interrupts(void){
    /* Enable RF interrupts 0, RXPKTDONE,SFD,FIFOP only -- see page 751  */
    HWREG(RFCORE_XREG_RFIRQM0) |= ((0x06|0x02|0x01) << RFCORE_XREG_RFIRQM0_RFIRQM_S) & RFCORE_XREG_RFIRQM0_RFIRQM_M;
 
@@ -407,19 +407,20 @@ void enable_radio_interrupts(void){
    HWREG(RFCORE_XREG_RFIRQM1) |= ((0x02) << RFCORE_XREG_RFIRQM1_RFIRQM_S) & RFCORE_XREG_RFIRQM1_RFIRQM_M;
 }
 
-void disable_radio_interrupts(void){
+port_INLINE  void disable_radio_interrupts(void){
    /* Enable RF interrupts 0, RXPKTDONE,SFD,FIFOP only -- see page 751  */
    HWREG(RFCORE_XREG_RFIRQM0) = 0;
    /* Enable RF interrupts 1, TXDONE only */
    HWREG(RFCORE_XREG_RFIRQM1) = 0;
 }
 
-void radio_on(void){
+
+port_INLINE void radio_on(void){
    // CC2538_RF_CSP_ISFLUSHRX();
     CC2538_RF_CSP_ISRXON();
 }
 
-void radio_off(void){
+port_INLINE void radio_off(void){
    /* Wait for ongoing TX to complete (e.g. this could be an outgoing ACK) */
    while(HWREG(RFCORE_XREG_FSMSTAT1) & RFCORE_XREG_FSMSTAT1_TX_ACTIVE);
    //CC2538_RF_CSP_ISFLUSHRX();

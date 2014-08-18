@@ -46,14 +46,9 @@
 
 #include "hw_ints.h"
 #include "hw_memmap.h"
+#include "hw_ssi.h"
 #include "debug.h"
 #include "interrupt.h"
-#include "hw_ioc.h"             // Access to IOC register defines
-#include "hw_ssi.h"             // Access to SSI register defines
-#include "hw_sys_ctrl.h"        // Clocking control
-#include "ioc.h"                // Access to driverlib ioc fns
-#include "gpio.h"               // Access to driverlib gpio fns
-#include "sys_ctrl.h"
 #include "ssi.h"
 
 //*****************************************************************************
@@ -770,7 +765,6 @@ SSIClockSourceGet(uint32_t ui32Base)
     //
     return(HWREG(ui32Base + SSI_O_CC));
 }
-
 
 //*****************************************************************************
 //

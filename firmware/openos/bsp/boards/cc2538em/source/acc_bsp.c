@@ -7,7 +7,6 @@
 #include "hw_memmap.h"
 #include "ioc.h"                // Access to driverlib ioc fns
 #include "gpio.h"               // Access to driverlib gpio fns
-#include "openwsn.h"
 #include "osens.h"
 #include "osens_itf.h"
 #include "opentimers.h"
@@ -15,7 +14,6 @@
 #include "board.h"
 #include "sys_ctrl.h"
 #include "osens_itf_mote.h"
-#include "opencoap.h"
 #if (USE_SPI_INTERFACE == 0)
 //#include "uart.h"
 #include "uarthal.h"

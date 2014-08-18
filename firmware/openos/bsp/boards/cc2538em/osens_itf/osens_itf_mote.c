@@ -7,7 +7,6 @@
 #include "hw_memmap.h"
 #include "ioc.h"                // Access to driverlib ioc fns
 #include "gpio.h"               // Access to driverlib gpio fns
-#include "openwsn.h"
 #include "osens.h"
 #include "osens_itf.h"
 #include "opentimers.h"
@@ -15,12 +14,9 @@
 #include "board.h"
 #include "sys_ctrl.h"
 #include "osens_itf_mote.h"
-#include "opencoap.h"
 #include "uarthal.h"
 #include "leds.h"
 #include "uart.h"
-#include "packetfunctions.h"
-#include "openqueue.h"
 
 // minimum tick time is 1
 #define MS2TICK(ms) (ms) > OSENS_SM_TICK_MS ? (ms) / OSENS_SM_TICK_MS : 1
@@ -114,7 +110,6 @@ osens_acq_schedule_t acquisition_schedule;
 
 //=========================== prototypes =======================================
 //=========================== public ==========================================
-uint8_t sensor_receive(OpenQueueEntry_t* msg, coap_header_iht*  coap_header, coap_option_iht* coap_options);
 void sensor_timer(void);
 static void osens_mote_tick(void);
 static void buBufFlush(void);
