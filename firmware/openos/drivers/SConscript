@@ -10,10 +10,16 @@ sources_c = [
     os.path.join('common','openserial.c'),
     os.path.join('common','opentimers.c'),
 ]
+
+# generic driver for open sensors
+if localEnv['board'] not in ['cc2538em']:
+    sources_c.append(os.path.join('common','osens.c'))
+    
 sources_h = [
     os.path.join('common','openhdlc.h'),
     os.path.join('common','openserial.h'),
     os.path.join('common','opentimers.h'),
+    os.path.join('common','osens.h'),
 ]
 
 if localEnv['board']=='python':

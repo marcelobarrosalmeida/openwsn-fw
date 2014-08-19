@@ -23,14 +23,17 @@
     <ClCompile Include="..\..\..\..\..\build\python_gcc\drivers\common\openhdlc_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\drivers\common\openserial_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\drivers\common\opentimers_obj.c" />
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\drivers\common\osens_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\kernel\openos\scheduler_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\adaptive_sync_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\IEEE802154E_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\IEEE802154_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02a-MAClow\topology_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\neighbors_obj.c" />
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\res_obj.c" />
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\otf_obj.c" />
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\processIE_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\schedule_obj.c" />
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\sixtop_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03a-IPHC\iphc_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03a-IPHC\openbridge_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\03b-IPv6\forwarding_obj.c" />
@@ -43,6 +46,7 @@
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\layerdebug\layerdebug_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\ohlone\ohlone_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\ohlone\ohlone_webpages_obj.c" />
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\osens\osens_app_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\r6t\r6t_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rex\rex_obj.c" />
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rinfo\rinfo_obj.c" />
@@ -105,7 +109,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Python27\include;$(SolutionDir)\..\..\..\..\build\python_gcc\drivers\common;$(SolutionDir)\..\..\..\..\build\python_gcc\kernel\openos;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn;$(SolutionDir)\..\..\..\..\build\python_gcc\bsp\boards\python;$(SolutionDir)\..\..\..\..\build\python_gcc\bsp\boards\;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\02a-MAClow;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\03a-IPHC;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\03b-IPv6;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\04-TRAN;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\ohlone;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\rrt;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\rwellknown;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udpinject;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\tcpinject;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\rinfo;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\cross-layers;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\r6t;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\rleds;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udpprint;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udprand;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\tcpecho;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udpecho;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\tcpprint;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udpstorm;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udplatency;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\sens_itf;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Python27\include;$(SolutionDir)\..\..\..\..\build\python_gcc\drivers\common;$(SolutionDir)\..\..\..\..\build\python_gcc\kernel\openos;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn;$(SolutionDir)\..\..\..\..\build\python_gcc\bsp\boards\python;$(SolutionDir)\..\..\..\..\build\python_gcc\bsp\boards\;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\02a-MAClow;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\03a-IPHC;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\03b-IPv6;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\04-TRAN;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\ohlone;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\rrt;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\rwellknown;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udpinject;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\tcpinject;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\rinfo;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\cross-layers;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\r6t;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\rleds;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udpprint;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udprand;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\tcpecho;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udpecho;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\tcpprint;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udpstorm;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\udplatency;$(SolutionDir)\..\..\..\..\build\python_gcc\openwsn\07-App\osens;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Python27\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -117,6 +121,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;OOS_OPENWSN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/D "OPENSIM" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

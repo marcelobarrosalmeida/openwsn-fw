@@ -499,7 +499,7 @@ uint8_t osens_get_brd_desc(osens_brd_id_t *brd)
 		return 0;
 }
 
-uint8_t osens_get_point_desc(uint8_t index, osens_point_desc_t *desc)
+uint8_t osens_get_pdesc(uint8_t index, osens_point_desc_t *desc)
 {
 	if((sm_state.state >= OSENS_STATE_RUN_SCH) && (index < sensor_points.num_of_points))
 	{
@@ -510,7 +510,7 @@ uint8_t osens_get_point_desc(uint8_t index, osens_point_desc_t *desc)
 		return 0;
 }
 
-int8_t osens_get_point_type(uint8_t index)
+int8_t osens_get_ptype(uint8_t index)
 {
 	if((sm_state.state >= OSENS_STATE_RUN_SCH) && (index < sensor_points.num_of_points))
 	{
@@ -531,7 +531,7 @@ uint8_t osens_get_point(uint8_t index, osens_point_t *point)
 		return 0;
 }
 
-uint8_t osens_set_point_value(uint8_t index, osens_point_t *point)
+uint8_t osens_set_pvalue(uint8_t index, osens_point_t *point)
 {
 	if((sm_state.state >= OSENS_STATE_RUN_SCH) && (index < sensor_points.num_of_points))
 	{

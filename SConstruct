@@ -93,6 +93,7 @@ command_line_options = {
         'z1',
         # Cortex-M3
         'cc2538', # TODO: replace by openmotecc2538 when directory renamed
+        'cc2538em',
         'openmotestm',
         'iot-lab_M3',
         'agilefox',

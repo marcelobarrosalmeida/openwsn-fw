@@ -139,7 +139,7 @@ void openwsn_init() {
    rleds__init();
    rwellknown_init();
    r6t_init();
-   sensors_init();
+   osens_app_init();
    //rreg_init();
    //rex_init();
    //rrube_init();

@@ -129,29 +129,29 @@ END_PACK
 
 //=========================== prototypes ======================================
 
-void             processIE_prependMLMEIE(
+port_INLINE void             processIE_prependMLMEIE(
    OpenQueueEntry_t*    pkt,
    uint8_t              len
 );
 
 //===== prepend IEs
 
-uint8_t          processIE_prependSyncIE(
+port_INLINE uint8_t          processIE_prependSyncIE(
    OpenQueueEntry_t*    pkt
 );
-uint8_t          processIE_prependSlotframeLinkIE(
+port_INLINE uint8_t          processIE_prependSlotframeLinkIE(
    OpenQueueEntry_t*    pkt
 );
-uint8_t          processIE_prependOpcodeIE(
+port_INLINE uint8_t          processIE_prependOpcodeIE(
    OpenQueueEntry_t*    pkt,
    uint8_t              uResCommandID
 );
-uint8_t          processIE_prependBandwidthIE(
+port_INLINE uint8_t          processIE_prependBandwidthIE(
    OpenQueueEntry_t*    pkt,
    uint8_t              numOfLinks, 
    uint8_t              slotframeID
 );
-uint8_t          processIE_prependSheduleIE(
+port_INLINE uint8_t          processIE_prependSheduleIE(
    OpenQueueEntry_t*    pkt,
    uint8_t              type,
    uint8_t              frameID,
@@ -161,21 +161,21 @@ uint8_t          processIE_prependSheduleIE(
 
 //===== retrieve IEs
 
-void             processIE_retrieveSlotframeLinkIE(
+port_INLINE void             processIE_retrieveSlotframeLinkIE(
    OpenQueueEntry_t*    pkt,
    uint8_t * ptr
 ); 
-void             processIE_retrieveOpcodeIE(
+port_INLINE void             processIE_retrieveOpcodeIE(
    OpenQueueEntry_t*    pkt,
    uint8_t*             ptr,
    opcode_IE_ht*        opcodeIE
 ); 
-void             processIE_retrieveBandwidthIE(
+port_INLINE void             processIE_retrieveBandwidthIE(
    OpenQueueEntry_t*    pkt,
    uint8_t *            ptr,
    bandwidth_IE_ht*     bandwidthIE
 ); 
-void             processIE_retrieveSheduleIE(
+port_INLINE void             processIE_retrieveSheduleIE(
    OpenQueueEntry_t*    pkt,
    uint8_t *            ptr,
    schedule_IE_ht*      schedule_ie

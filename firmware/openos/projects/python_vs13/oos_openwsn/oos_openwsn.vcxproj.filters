@@ -117,9 +117,6 @@
     <ClCompile Include="..\..\..\..\..\build\python_gcc\bsp\boards\python\radiotimer_obj.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\res_obj.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\rex\rex_obj.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -178,6 +175,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\udpstorm\udpstorm_obj.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\07-App\osens\osens_app_obj.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\otf_obj.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\drivers\common\osens_obj.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\processIE_obj.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\build\python_gcc\openwsn\02b-MAChigh\sixtop_obj.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
