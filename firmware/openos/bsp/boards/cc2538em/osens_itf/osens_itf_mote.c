@@ -524,7 +524,7 @@ uint8_t osens_get_point(uint8_t index, osens_point_t *point)
 {
 	if((sm_state.state >= OSENS_STATE_RUN_SCH) && (index < sensor_points.num_of_points))
 	{
-		memcpy(point,&sensor_points.points[index].value,sizeof(sizeof(osens_point_t)));
+		memcpy(point,&sensor_points.points[index].value,sizeof(osens_point_t));
 		return 1;
 	}
 	else

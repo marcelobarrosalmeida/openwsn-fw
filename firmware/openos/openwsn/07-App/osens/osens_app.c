@@ -21,7 +21,6 @@ const uint8_t osens_val_path0 [] = "s";
 coap_resource_desc_t osens_val_vars;
 
 static uint8_t digits[] = "0123456789";
-//static char *data_types[10] = { "u8", "s8", "u16", "s16", "u32", "s32", "u64", "s64", "f", "d" };
 
 static double decode_number(uint8_t *buffer, uint8_t len)
 {
@@ -30,7 +29,7 @@ static double decode_number(uint8_t *buffer, uint8_t len)
 	uint8_t neg = 0;
 	uint8_t frac = 0;
 	double div = 10.0;
-	double number;
+    double number = 0;
 
 	if(*pbuf == '-')
 	{
@@ -42,7 +41,7 @@ static double decode_number(uint8_t *buffer, uint8_t len)
 	{
 		if(*pbuf == '.')
 		{
-			frac = 1;
+            frac = frac == 0 ? 1 : frac; // only one period per number
 			pbuf++;
 			continue;
 		}
@@ -50,7 +49,7 @@ static double decode_number(uint8_t *buffer, uint8_t len)
 		if(frac == 1)
 		{
 			number = number + (*pbuf++ - 0x30)/div;
-			div = div / 10;
+            div = div * 10;
 			// protect div near zero here ?
 		}
 		else
@@ -63,12 +62,15 @@ static double decode_number(uint8_t *buffer, uint8_t len)
 	return number;
 }
 
-static uint8_t * insert_str(uint8_t *buffer, uint8_t *str, uint32_t len)
+static uint8_t * insert_str(uint8_t *buffer, uint8_t *str, uint32_t len, uint8_t quotes)
 {
 	uint8_t *pbuf = buffer;
+    if (quotes)
 	*pbuf++ = '"';
 	memcpy(pbuf,str,len);
 	pbuf += len;
+
+    if (quotes)
 	*pbuf++ = '"';
 	return pbuf;
 }
@@ -279,23 +281,24 @@ owerror_t osens_desc_receive(OpenQueueEntry_t* msg, coap_header_iht*  coap_heade
 
 			if(osens_get_brd_desc(&board_info))
 			{
-				pbuf = insert_str(pbuf,(uint8_t*)"{\"ver\":",7);
+				pbuf = insert_str(pbuf, (uint8_t*)"{\"ver\":", 7,0);
 				pbuf = insert_uint(pbuf,board_info.hardware_revision);
-				pbuf = insert_str(pbuf,(uint8_t*)",\"model\":",9);
-				pbuf = insert_str(pbuf,board_info.model,strlen((char *)board_info.model));
-				pbuf = insert_str(pbuf,(uint8_t*)",\"id\":",6);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"model\":", 9,0);
+				pbuf = insert_str(pbuf, board_info.model, strlen((char *) board_info.model),1);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"id\":", 6,0);
 				pbuf = insert_uint(pbuf,board_info.sensor_id);
-				pbuf = insert_str(pbuf,(uint8_t*)",\"npts\":",8);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"npts\":", 8,0);
 				pbuf = insert_uint(pbuf,board_info.num_of_points);
-				pbuf = insert_str(pbuf,(uint8_t*)"}",1);			}
+				pbuf = insert_str(pbuf, (uint8_t*)"}", 1,0);
+			}
 			else
-				pbuf = insert_str(pbuf,(uint8_t*)"{}",2);
+				pbuf = insert_str(pbuf,(uint8_t*)"{}",2,0);
 
 			outcome = E_SUCCESS;
 		} // /d/pt/1 or /d/pt/12
 		else if (coap_options[1].length == 2 &&
 				coap_options[1].pValue[0] == 'p' &&
-				coap_options[1].pValue[0] == 't' &&
+				coap_options[1].pValue[1] == 't' &&
 				(coap_options[2].length == 1 || coap_options[2].length == 2))
 		{
 			osens_point_desc_t pt_desc;
@@ -308,21 +311,20 @@ owerror_t osens_desc_receive(OpenQueueEntry_t* msg, coap_header_iht*  coap_heade
 
 			if(osens_get_pdesc(index,&pt_desc))
 			{
-
-				pbuf = insert_str(pbuf,(uint8_t*)"{\"name\":",8);
-				pbuf = insert_str(pbuf,pt_desc.name,strlen((char*)pt_desc.name));
-				pbuf = insert_str(pbuf,(uint8_t*)",\"type\":",8);
+				pbuf = insert_str(pbuf, (uint8_t*)"{\"name\":", 8, 0);
+				pbuf = insert_str(pbuf, pt_desc.name, strlen((char*) pt_desc.name), 1);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"type\":", 8, 0);
 				pbuf = insert_uint(pbuf,pt_desc.type);
-				pbuf = insert_str(pbuf,(uint8_t*)",\"unit\":",8);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"unit\":", 8, 0);
 				pbuf = insert_uint(pbuf,pt_desc.unit);
-				pbuf = insert_str(pbuf,(uint8_t*)",\"rights\":",10);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"rights\":", 10, 0);
 				pbuf = insert_uint(pbuf,pt_desc.access_rights);
-				pbuf = insert_str(pbuf,(uint8_t*)",\"scan\":",8);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"scan\":", 8, 0);
 				pbuf = insert_uint(pbuf,pt_desc.sampling_time_x250ms);
-				pbuf = insert_str(pbuf,(uint8_t*)"}",1);
+				pbuf = insert_str(pbuf, (uint8_t*)"}", 1, 0);
 			}
 			else
-				pbuf = insert_str(pbuf,(uint8_t*)"{}",2);
+				pbuf = insert_str(pbuf,(uint8_t*)"{}",2,0);
 
 			outcome = E_SUCCESS;
 		}
@@ -379,22 +381,29 @@ owerror_t osens_val_receive(
 			osens_point_t pt;
 			uint8_t num_points = osens_get_num_points();
 
-			pbuf = insert_str(pbuf,(uint8_t*)"[",1);
+			pbuf = insert_str(pbuf,(uint8_t*)"[",1,0);
+			if(num_points == 0)
+			{
+				pbuf = insert_str(pbuf,(uint8_t*)"{}",2,0);
+			}
+			else
+			{
 			for(m = 0 ; m < num_points ; m++)
 			{
 				if(osens_get_point(m,&pt))
 				{
-					pbuf = insert_str(pbuf,(uint8_t*)"{\"idx\":",7);
+						pbuf = insert_str(pbuf, (uint8_t*)"{\"idx\":", 7,0);
 					pbuf = insert_uint(pbuf,m);
-					pbuf = insert_str(pbuf,(uint8_t*)",\"v\":",5);
+						pbuf = insert_str(pbuf, (uint8_t*)",\"v\":", 5,0);
 					pbuf = insert_point_val(pbuf,&pt);
 					if(m < (num_points - 1))
-						pbuf = insert_str(pbuf,(uint8_t*)"},",2);
+							pbuf = insert_str(pbuf, (uint8_t*)"},", 2,0);
 					else
-						pbuf = insert_str(pbuf,(uint8_t*)"}",1);
+							pbuf = insert_str(pbuf, (uint8_t*)"}", 1,0);
 				}
 			}
-			pbuf = insert_str(pbuf,(uint8_t*)"]",1);
+			}
+			pbuf = insert_str(pbuf,(uint8_t*)"]",1,0);
 
 			outcome = E_SUCCESS;
 		} // /s/1 or /s/12
@@ -410,12 +419,12 @@ owerror_t osens_val_receive(
 
 			if(osens_get_point(index,&pt))
 			{
-				pbuf = insert_str(pbuf,(uint8_t*)"{\"v\":",5);
+				pbuf = insert_str(pbuf,(uint8_t*)"{\"v\":",5,0);
 				pbuf = insert_point_val(pbuf,&pt);
-				pbuf = insert_str(pbuf,(uint8_t*)"}",1);
+				pbuf = insert_str(pbuf,(uint8_t*)"}",1,0);
 			}
 			else
-				pbuf = insert_str(pbuf,(uint8_t*)"{}",2);
+				pbuf = insert_str(pbuf,(uint8_t*)"{}",2,0);
 
 			outcome = E_SUCCESS;
 		}

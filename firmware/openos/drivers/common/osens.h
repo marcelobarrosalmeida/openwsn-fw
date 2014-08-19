@@ -65,7 +65,7 @@ typedef struct osens_brd_id_s
 	uint32_t sensor_id;
 	uint8_t hardware_revision;
 	uint8_t num_of_points;
-	uint8_t cabalities;
+	uint8_t capabilities;
 } osens_brd_id_t;
 
 

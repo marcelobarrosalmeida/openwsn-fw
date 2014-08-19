@@ -199,11 +199,11 @@ uint8_t osens_pack_cmd_res(osens_cmd_res_t *cmd, uint8_t *frame)
             memcpy(buf, cmd->payload.brd_id_cmd.model, OSENS_MODEL_NAME_SIZE);
             buf += OSENS_MODEL_NAME_SIZE;
             memcpy(buf, cmd->payload.brd_id_cmd.manufactor, OSENS_MANUF_NAME_SIZE);
-            buf += OSENS_MODEL_NAME_SIZE;
+            buf += OSENS_MANUF_NAME_SIZE;
             buf_io_put32_tl_ap(cmd->payload.brd_id_cmd.sensor_id, buf);
             buf_io_put8_tl_ap(cmd->payload.brd_id_cmd.hardware_revision, buf);
             buf_io_put8_tl_ap(cmd->payload.brd_id_cmd.num_of_points, buf);
-            buf_io_put8_tl_ap(cmd->payload.brd_id_cmd.cabalities, buf);
+            buf_io_put8_tl_ap(cmd->payload.brd_id_cmd.capabilities, buf);
             break;
         case OSENS_REGMAP_BRD_STATUS:
             buf_io_put8_tl_ap(cmd->payload.brd_status_cmd.status, buf);
@@ -305,11 +305,11 @@ uint8_t osens_unpack_cmd_res(osens_cmd_res_t * cmd, uint8_t *frame, uint8_t fram
         memcpy(cmd->payload.brd_id_cmd.model, buf, OSENS_MODEL_NAME_SIZE);
         buf += OSENS_MODEL_NAME_SIZE;
         memcpy(cmd->payload.brd_id_cmd.manufactor, buf, OSENS_MANUF_NAME_SIZE);
-        buf += OSENS_MODEL_NAME_SIZE;
+        buf += OSENS_MANUF_NAME_SIZE;
         cmd->payload.brd_id_cmd.sensor_id = buf_io_get32_fl_ap(buf);
         cmd->payload.brd_id_cmd.hardware_revision = buf_io_get8_fl_ap(buf);
         cmd->payload.brd_id_cmd.num_of_points = buf_io_get8_fl_ap(buf);
-        cmd->payload.brd_id_cmd.cabalities = buf_io_get8_fl_ap(buf);
+        cmd->payload.brd_id_cmd.capabilities = buf_io_get8_fl_ap(buf);
         break;
     case OSENS_REGMAP_BRD_STATUS:
         cmd->payload.brd_status_cmd.status = buf_io_get8_fl_ap(buf);
