@@ -18,6 +18,8 @@
 #include "leds.h"
 #include "uart.h"
 
+#define TRACE_ON 0
+
 // minimum tick time is 1
 #define MS2TICK(ms) (ms) > OSENS_SM_TICK_MS ? (ms) / OSENS_SM_TICK_MS : 1
 
@@ -38,6 +40,26 @@ enum {
     OSENS_STATE_WAIT_PT_VAL_ANS = 13,
     OSENS_STATE_PROC_PT_VAL = 14
 };
+
+#if TRACE_ON == 1
+uint8_t *sm_states_str[] = {
+    "INIT",
+    "SEND_ITF_VER",
+    "WAIT_ITF_VER_ANS",
+    "PROC_ITF_VER",
+    "SEND_BRD_ID",
+    "WAIT_BRD_ID_ANS",
+    "PROC_BRD_ID",
+    "SEND_PT_DESC",
+    "WAIT_PT_DESC_ANS",
+    "PROC_PT_DESC",
+    "BUILD_SCH",
+    "RUN_SCH",
+    "SEND_PT_VAL",
+    "WAIT_PT_VAL_ANS",
+    "PROC_PT_VAL"
+};
+#endif
 
 enum {
 	OSENS_STATE_EXEC_OK = 0,
@@ -114,7 +136,51 @@ void sensor_timer(void);
 static void osens_mote_tick(void);
 static void buBufFlush(void);
 void bspLedToggle(uint8_t ui8Leds);
-void sensor_sendDone(OpenQueueEntry_t* msg, owerror_t error);
+#if TRACE_ON == 1
+static void osens_mote_show_values(void)
+{
+    uint8_t n;
+    OS_UTIL_LOG(1, ("\n"));
+    for (n = 0; n < sensor_points.num_of_points; n++)
+    {
+        switch (sensor_points.points[n].value.type)
+        {
+        case OSENS_DT_U8:
+            OS_UTIL_LOG(1, ("Point %02d: %d\n", n, sensor_points.points[n].value.value.u8));
+            break;
+        case OSENS_DT_S8:
+            OS_UTIL_LOG(1, ("Point %02d: %d\n", n, sensor_points.points[n].value.value.s8));
+            break;
+        case OSENS_DT_U16:
+            OS_UTIL_LOG(1, ("Point %02d: %d\n", n, sensor_points.points[n].value.value.u16));
+            break;
+        case OSENS_DT_S16:
+            OS_UTIL_LOG(1, ("Point %02d: %d\n", n, sensor_points.points[n].value.value.s16));
+            break;
+        case OSENS_DT_U32:
+            OS_UTIL_LOG(1, ("Point %02d: %d\n", n, sensor_points.points[n].value.value.u32));
+            break;
+        case OSENS_DT_S32:
+            OS_UTIL_LOG(1, ("Point %02d: %d\n", n, sensor_points.points[n].value.value.s32));
+            break;
+        case OSENS_DT_U64:
+            OS_UTIL_LOG(1, ("Point %02d: %d\n", n, sensor_points.points[n].value.value.u64));
+            break;
+        case OSENS_DT_S64:
+            OS_UTIL_LOG(1, ("Point %02d: %d\n", n, sensor_points.points[n].value.value.s64));
+            break;
+        case OSENS_DT_FLOAT:
+            OS_UTIL_LOG(1, ("Point %02d: %f\n", n, sensor_points.points[n].value.value.fp32));
+            break;
+        case OSENS_DT_DOUBLE:
+            OS_UTIL_LOG(1, ("Point %02d: %f\n", n, sensor_points.points[n].value.value.fp64));
+            break;
+        default:
+            break;
+       }
+    }
+}
+#endif
 
 uint8_t osens_mote_init(void)
 {
@@ -168,7 +234,9 @@ static uint8_t osens_mote_sm_func_pt_val_ans(osens_mote_sm_state_t *st)
     st->retries = 0;
     st->point_index++;
 
-	leds_debug_toggle();  //LED3
+#if TRACE_ON == 1
+    osens_mote_show_values();
+#endif
 
     return OSENS_STATE_EXEC_OK;
 }
@@ -186,7 +254,6 @@ static uint8_t osens_mote_sm_func_req_pt_val(osens_mote_sm_state_t *st)
 	if(st->retries > 3)
 		return OSENS_STATE_EXEC_ERROR;
 
-	// normal point reading
 	point = acquisition_schedule.scan.index[st->point_index];
     cmd.hdr.addr = OSENS_REGMAP_READ_POINT_DATA_1 + point;
     st->trmout_counter = 0;
@@ -199,6 +266,8 @@ static uint8_t osens_mote_sm_func_run_sch(osens_mote_sm_state_t *st)
 {
     uint8_t n;
 
+    leds_error_toggle();
+
     acquisition_schedule.scan.num_of_points = 0;
 
     for (n = 0; n < acquisition_schedule.num_of_points; n++)
@@ -209,8 +278,14 @@ static uint8_t osens_mote_sm_func_run_sch(osens_mote_sm_state_t *st)
 
         if (acquisition_schedule.points[n].counter == 0)
         {
-        	acquisition_schedule.scan.index[acquisition_schedule.scan.num_of_points] = n;
+            // n: point index in the schedule database
+            // index: point index in the points database
+            uint8_t index = acquisition_schedule.points[n].index;
+
+            acquisition_schedule.scan.index[acquisition_schedule.scan.num_of_points] = index;
         	acquisition_schedule.scan.num_of_points++;
+            // restore counter value for next cycle
+            acquisition_schedule.points[n].counter = acquisition_schedule.points[n].sampling_time_x250ms;
         }
 
     }
@@ -219,19 +294,24 @@ static uint8_t osens_mote_sm_func_run_sch(osens_mote_sm_state_t *st)
     {
     	st->point_index = 0;
     	st->retries = 0;
+
+#if TRACE_ON == 1
+    {
+            OS_UTIL_LOG(1, ("\n"));
+            OS_UTIL_LOG(1, ("Next Scan\n"));
+            OS_UTIL_LOG(1, ("=========\n"));
+            for (n = 0; n < acquisition_schedule.scan.num_of_points; n++)
+            {
+                OS_UTIL_LOG(1, ("--> %u [%u]\n", n,acquisition_schedule.scan.index[n]));
+            }
+    }
+#endif
+
     	return OSENS_STATE_EXEC_WAIT_ABORT;
     }
     else
     	return OSENS_STATE_EXEC_WAIT_OK;
 }
-
-/*
-
-{
-    osens_mote_read_point(acquisition_schedule.points[n].index);
-    acquisition_schedule.points[n].counter = acquisition_schedule.points[n].sampling_time_x250ms;
-}
-*/
 
 static uint8_t osens_mote_sm_func_build_sch(osens_mote_sm_state_t *st)
 {
@@ -253,6 +333,16 @@ static uint8_t osens_mote_sm_func_build_sch(osens_mote_sm_state_t *st)
         }
     }
 
+#if TRACE_ON == 1
+    OS_UTIL_LOG(1,("\n"));
+    OS_UTIL_LOG(1, ("Schedule\n"));
+    OS_UTIL_LOG(1, ("========\n"));
+    for (n = 0; n < acquisition_schedule.num_of_points; n++)
+    {
+        OS_UTIL_LOG(1, ("[%d] point %02d at %dms\n", n, acquisition_schedule.points[n].index, acquisition_schedule.points[n].sampling_time_x250ms * 250));
+    }
+#endif
+
     return OSENS_STATE_EXEC_OK;
 }
 
@@ -266,8 +356,25 @@ static uint8_t osens_mote_sm_func_pt_desc_ans(osens_mote_sm_state_t *st)
     if (size != ans_size || (ans.hdr.addr != OSENS_REGMAP_POINT_DESC_1 + st->point_index))
         return OSENS_STATE_EXEC_ERROR;
 
+    // save description and type, value is not available yet
     memcpy(&sensor_points.points[st->point_index].desc,&ans.payload.point_desc_cmd,sizeof(osens_point_desc_t));
+    sensor_points.points[st->point_index].value.type = sensor_points.points[st->point_index].desc.type;
 
+#if TRACE_ON == 1
+    {
+        uint8_t n = st->point_index;
+        OS_UTIL_LOG(1, ("\n"));
+        OS_UTIL_LOG(1, ("Point %02d info\n", n));
+        OS_UTIL_LOG(1, ("=============\n"));
+        OS_UTIL_LOG(1, ("Name     : %-8s\n", sensor_points.points[n].desc.name));
+        OS_UTIL_LOG(1, ("Type     : %d\n", sensor_points.points[n].desc.type));
+        OS_UTIL_LOG(1, ("Unit     : %d\n", sensor_points.points[n].desc.unit));
+        OS_UTIL_LOG(1, ("Rights   : %02X\n", sensor_points.points[n].desc.access_rights));
+        OS_UTIL_LOG(1, ("Sampling : %d\n\n", sensor_points.points[n].desc.sampling_time_x250ms));
+    }
+#endif
+
+    st->retries = 0;
     st->point_index++;
     sensor_points.num_of_points = st->point_index;
 
@@ -276,11 +383,13 @@ static uint8_t osens_mote_sm_func_pt_desc_ans(osens_mote_sm_state_t *st)
 
 static uint8_t osens_mote_sm_func_req_pt_desc(osens_mote_sm_state_t *st)
 {
-	// end of cyclic point description reading
-	board_info.num_of_points = 1;  //teste rff
-
     if(st->point_index >= board_info.num_of_points)
     	return OSENS_STATE_EXEC_WAIT_ABORT;
+
+    // error condition after 3 retries
+    st->retries++;
+    if (st->retries > 3)
+        return OSENS_STATE_EXEC_ERROR;
 
     cmd.hdr.addr = OSENS_REGMAP_POINT_DESC_1 + st->point_index;
     st->trmout_counter = 0;
@@ -305,7 +414,20 @@ static uint8_t osens_mote_sm_func_proc_brd_id_ans(osens_mote_sm_state_t *st)
     if ((board_info.num_of_points == 0) || (board_info.num_of_points > OSENS_MAX_POINTS))
     	return OSENS_STATE_EXEC_ERROR;
 
+#if TRACE_ON == 1
+    OS_UTIL_LOG(1, ("\n"));
+    OS_UTIL_LOG(1, ("Board info\n"));
+    OS_UTIL_LOG(1, ("==========\n"));
+    OS_UTIL_LOG(1, ("Manufactor : %-8s\n", board_info.manufactor));
+    OS_UTIL_LOG(1, ("Model      : %-8s\n", board_info.model));
+    OS_UTIL_LOG(1, ("ID         : %08X\n", board_info.sensor_id));
+    OS_UTIL_LOG(1, ("HW REV     : %02X\n", board_info.hardware_revision));
+    OS_UTIL_LOG(1, ("Capabilties: %02X\n", board_info.cabalities));
+    OS_UTIL_LOG(1, ("Points     : %d\n\n", board_info.num_of_points));
+#endif
+
     sensor_points.num_of_points = 0;
+    st->retries = 0;
 
     return OSENS_STATE_EXEC_OK;
 }
@@ -348,13 +470,13 @@ static uint8_t osens_mote_sm_func_wait_ans(osens_mote_sm_state_t *st)
 	 */
 	if ((st->trmout_counter > 0) && (num_rx_bytes > 3))
 	{
-		st->frame_arrived = true;
+        st->frame_arrived = 1;
 		num_rx_bytes = 0;
 	}
 
 	if(st->frame_arrived)
 	{
-		st->frame_arrived = false;
+        st->frame_arrived = 0;
 		return OSENS_STATE_EXEC_WAIT_STOP;
 	}
 
@@ -381,7 +503,7 @@ static uint8_t osens_mote_sm_func_req_ver(osens_mote_sm_state_t *st)
 {
     cmd.hdr.addr = OSENS_REGMAP_ITF_VERSION;
     st->trmout_counter = 0;
-    st->trmout = MS2TICK(500);
+    st->trmout = MS2TICK(5000);
     return osens_mote_pack_send_frame(&cmd, 4);
 }
 
@@ -389,6 +511,8 @@ static uint8_t osens_mote_sm_func_req_ver(osens_mote_sm_state_t *st)
 static uint8_t osens_mote_sm_func_init(osens_mote_sm_state_t *st)
 {
 	uint8_t ret = OSENS_STATE_EXEC_OK;
+
+	leds_error_on();
 
 	memset(&cmd, 0, sizeof(cmd));
 	memset(&ans, 0, sizeof(ans));
@@ -406,7 +530,7 @@ void osens_mote_sm(void)
 {
 	uint8_t ret;
 
-	#ifdef TRACE_ON
+#if TRACE_ON == 1
 	uint8_t ls = sm_state.state;
 	#endif
 
@@ -441,8 +565,8 @@ void osens_mote_sm(void)
 			break;
 	}
 
-	#ifdef TRACE_ON
-    //printf("osens_mote_sm %d -> %d\n",ls,sm_state.state);
+#if TRACE_ON == 1
+    printf("[SM]  %llu    (%02d) %-16s -> (%02d) %-16s\n", tick_counter, ls, sm_states_str[ls], sm_state.state,sm_states_str[sm_state.state]);
 	#endif
 
 }
@@ -463,7 +587,7 @@ const osens_mote_sm_table_t osens_mote_sm_table[] =
 		{ osens_mote_sm_func_wait_ans,         OSENS_STATE_PROC_BRD_ID,      OSENS_STATE_INIT,        OSENS_STATE_INIT }, // OSENS_STATE_WAIT_BRD_ID_ANS
 		{ osens_mote_sm_func_proc_brd_id_ans,  OSENS_STATE_SEND_PT_DESC,     OSENS_STATE_INIT,        OSENS_STATE_INIT }, // OSENS_STATE_PROC_BRD_ID
 		{ osens_mote_sm_func_req_pt_desc,      OSENS_STATE_WAIT_PT_DESC_ANS, OSENS_STATE_BUILD_SCH,   OSENS_STATE_INIT }, // OSENS_STATE_SEND_PT_DESC
-		{ osens_mote_sm_func_wait_ans,         OSENS_STATE_PROC_PT_DESC,     OSENS_STATE_INIT,        OSENS_STATE_INIT }, // OSENS_STATE_WAIT_PT_DESC_ANS
+    { osens_mote_sm_func_wait_ans, OSENS_STATE_PROC_PT_DESC, OSENS_STATE_SEND_PT_DESC, OSENS_STATE_INIT }, // OSENS_STATE_WAIT_PT_DESC_ANS
 		{ osens_mote_sm_func_pt_desc_ans,      OSENS_STATE_SEND_PT_DESC,     OSENS_STATE_INIT,        OSENS_STATE_INIT }, // OSENS_STATE_PROC_PT_DESC
 		{ osens_mote_sm_func_build_sch,        OSENS_STATE_RUN_SCH,          OSENS_STATE_INIT,        OSENS_STATE_INIT }, // OSENS_STATE_BUILD_SCH
 		{ osens_mote_sm_func_run_sch,          OSENS_STATE_RUN_SCH,          OSENS_STATE_SEND_PT_VAL, OSENS_STATE_INIT }, // OSENS_STATE_RUN_SCH

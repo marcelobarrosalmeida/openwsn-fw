@@ -20,8 +20,6 @@ coap_resource_desc_t osens_desc_vars;
 const uint8_t osens_val_path0 [] = "s";
 coap_resource_desc_t osens_val_vars;
 
-static uint8_t digits[] = "0123456789";
-
 static double decode_number(uint8_t *buffer, uint8_t len)
 {
 	uint8_t *pbuf = buffer;
@@ -81,6 +79,7 @@ static uint8_t * insert_uint(uint8_t *buffer, uint64_t value)
     uint8_t* pbuf = buffer;
     uint8_t *pend;
     uint64_t shifter;
+    uint8_t digits[10] = {'0','1','2','3','4','5','6','7','8','9'};
 
     // count the number of digits
     shifter = value;
@@ -117,35 +116,22 @@ static uint8_t * insert_int(uint8_t *buffer, int64_t value)
 }
 
 
-// based on // http://www.ragestorm.net/blogs/?p=57
-// does it works ?
 static uint8_t * insert_float(uint8_t *buffer, double value)
 {
+	uint64_t itg, frc;
+	uint8_t neg;
 	uint8_t* pbuf = buffer;
-	uint32_t x = *((uint32_t*)&value);
-	uint32_t frac, base, c, sign, exp, man;
 
-	sign = x >> 31;
-	exp = ((x >> 23) & 0xff) - 127;
-	man = x & ((1 << 23) - 1);
-	man |= 1 << 23;
+	neg = value < 0 ? 1 : 0;
+	itg = (uint64_t) value;
+	frc = (uint64_t) ((value - itg)*1000000000); // precision
 
-	if (sign)
+	if(neg)
 		*pbuf++ = '-';
 
-	pbuf = insert_uint(pbuf, man >> (23 - exp));
+	pbuf = insert_uint(pbuf,itg);
 	*pbuf++ = '.';
-
-	frac = man & ((1 << (23-exp)) - 1);
-	base = 1 << (23 - exp);
-	c = 0;
-
-	while (frac != 0 && c++ < 6)
-	{
-		frac *= 10;
-		pbuf = insert_uint(pbuf, (frac / base));
-		frac %= base;
-	}
+	pbuf = insert_uint(pbuf,frc);
 
 	return pbuf;
 }
@@ -241,7 +227,7 @@ void osens_app_init(void) {
     osens_desc_vars.path0val = (uint8_t*) (&osens_desc_path0);
     osens_desc_vars.path1len = 0;
     osens_desc_vars.path1val = NULL;
-    osens_desc_vars.componentID = COMPONENT_SENSORS;
+    osens_desc_vars.componentID = COMPONENT_SENSORS_DESC;
     osens_desc_vars.callbackRx = &osens_desc_receive;
     osens_desc_vars.callbackSendDone = &osens_desc_sendDone;
 
@@ -249,7 +235,7 @@ void osens_app_init(void) {
     osens_val_vars.path0val = (uint8_t*) (&osens_val_path0);
     osens_val_vars.path1len = 0;
     osens_val_vars.path1val = NULL;
-    osens_val_vars.componentID = COMPONENT_SENSORS;
+    osens_val_vars.componentID = COMPONENT_SENSORS_VAL;
     osens_val_vars.callbackRx = &osens_val_receive;
     osens_val_vars.callbackSendDone = &osens_val_sendDone;
 
@@ -264,7 +250,7 @@ owerror_t osens_desc_receive(OpenQueueEntry_t* msg, coap_header_iht*  coap_heade
 {
     owerror_t outcome = E_FAIL;
     uint8_t n = 0;
-    uint8_t buf[128];
+    static uint8_t buf[128];
     uint8_t *pbuf = &buf[0];
 
     switch (coap_header->Code)
@@ -275,7 +261,8 @@ owerror_t osens_desc_receive(OpenQueueEntry_t* msg, coap_header_iht*  coap_heade
         msg->length = 0;
 
 		// /d
-		if (coap_options[1].length == 0)
+        if (((coap_options[1].length == 0) && (coap_options[1].type == COAP_OPTION_NUM_URIPATH)) ||
+        				(coap_options[1].type != COAP_OPTION_NUM_URIPATH))
 		{
 			osens_brd_id_t board_info;
 
@@ -366,7 +353,7 @@ owerror_t osens_val_receive(
     ) {
     owerror_t outcome = E_FAIL;
     uint8_t n;
-    uint8_t buf[128];
+    static uint8_t buf[128];
     uint8_t *pbuf = &buf[0];
 
     switch (coap_header->Code) {
@@ -374,8 +361,9 @@ owerror_t osens_val_receive(
         // reset packet payload
         msg->payload = &(msg->packet[127]);
         msg->length = 0;
-
-		if (coap_options[1].length == 0)
+        // /s
+		if (((coap_options[1].length == 0) && (coap_options[1].type == COAP_OPTION_NUM_URIPATH)) ||
+				(coap_options[1].type != COAP_OPTION_NUM_URIPATH))
 		{
 			uint8_t m;
 			osens_point_t pt;
@@ -407,7 +395,8 @@ owerror_t osens_val_receive(
 
 			outcome = E_SUCCESS;
 		} // /s/1 or /s/12
-		else if(coap_options[1].length == 1 || coap_options[1].length == 2)
+		else if(((coap_options[1].length == 1 || coap_options[1].length == 2)) &&
+				(coap_options[1].type == COAP_OPTION_NUM_URIPATH))
 		{
 			uint8_t index;
 			osens_point_t pt;
