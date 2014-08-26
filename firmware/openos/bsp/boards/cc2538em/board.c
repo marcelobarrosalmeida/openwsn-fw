@@ -77,11 +77,8 @@ void board_init() {
    button_init();
    bsp_timer_init();
    radiotimer_init();
-#if ENABLE_UART0_DAG
    uart_init();
-#else
    uart1_init();    //sens_itf
-#endif
    radio_init();
 
   // leds_debug_on();

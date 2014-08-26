@@ -2,8 +2,19 @@
 #include "openwsn.h"
 #include "osens.h"
 
+static osens_brd_id_t board_info;
+
 uint8_t osens_init(void)
 {
+	memset(&board_info, 0, sizeof(board_info));
+	
+    strcpy(board_info.model, "PYTHON");
+    strcpy(board_info.manufactor, "OWSN");
+    board_info.sensor_id = 0xDEADBEEF;
+    board_info.hardware_revision = 0x01;
+    board_info.num_of_points = 0;
+    board_info.capabilities = 0;
+
     return 1;
 }
 uint8_t osens_get_brd_desc(osens_brd_id_t *brd)

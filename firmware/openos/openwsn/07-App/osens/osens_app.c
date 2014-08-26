@@ -268,9 +268,9 @@ owerror_t osens_desc_receive(OpenQueueEntry_t* msg, coap_header_iht*  coap_heade
 
 			if(osens_get_brd_desc(&board_info))
 			{
-				pbuf = insert_str(pbuf, (uint8_t*)"{\"ver\":", 7,0);
+				pbuf = insert_str(pbuf, (uint8_t*)"{\"v\":", 5,0);
 				pbuf = insert_uint(pbuf,board_info.hardware_revision);
-				pbuf = insert_str(pbuf, (uint8_t*)",\"model\":", 9,0);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"m\":", 5,0);
 				pbuf = insert_str(pbuf, board_info.model, strlen((char *) board_info.model),1);
 				pbuf = insert_str(pbuf, (uint8_t*)",\"id\":", 6,0);
 				pbuf = insert_uint(pbuf,board_info.sensor_id);
@@ -298,15 +298,15 @@ owerror_t osens_desc_receive(OpenQueueEntry_t* msg, coap_header_iht*  coap_heade
 
 			if(osens_get_pdesc(index,&pt_desc))
 			{
-				pbuf = insert_str(pbuf, (uint8_t*)"{\"name\":", 8, 0);
+				pbuf = insert_str(pbuf, (uint8_t*)"{\"n\":", 5, 0);
 				pbuf = insert_str(pbuf, pt_desc.name, strlen((char*) pt_desc.name), 1);
-				pbuf = insert_str(pbuf, (uint8_t*)",\"type\":", 8, 0);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"t\":", 5, 0);
 				pbuf = insert_uint(pbuf,pt_desc.type);
-				pbuf = insert_str(pbuf, (uint8_t*)",\"unit\":", 8, 0);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"u\":", 5, 0);
 				pbuf = insert_uint(pbuf,pt_desc.unit);
-				pbuf = insert_str(pbuf, (uint8_t*)",\"rights\":", 10, 0);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"ar\":", 6, 0);
 				pbuf = insert_uint(pbuf,pt_desc.access_rights);
-				pbuf = insert_str(pbuf, (uint8_t*)",\"scan\":", 8, 0);
+				pbuf = insert_str(pbuf, (uint8_t*)",\"s\":", 5, 0);
 				pbuf = insert_uint(pbuf,pt_desc.sampling_time_x250ms);
 				pbuf = insert_str(pbuf, (uint8_t*)"}", 1, 0);
 			}
@@ -365,6 +365,9 @@ owerror_t osens_val_receive(
 		if (((coap_options[1].length == 0) && (coap_options[1].type == COAP_OPTION_NUM_URIPATH)) ||
 				(coap_options[1].type != COAP_OPTION_NUM_URIPATH))
 		{
+			// WE DO NOT HAVE SPACE FOR A FULL FRAME WITH ALL PARAMETERS
+			// at ~80 bytes we have a overflow
+			/*
 			uint8_t m;
 			osens_point_t pt;
 			uint8_t num_points = osens_get_num_points();
@@ -394,6 +397,7 @@ owerror_t osens_val_receive(
 			pbuf = insert_str(pbuf,(uint8_t*)"]",1,0);
 
 			outcome = E_SUCCESS;
+			*/
 		} // /s/1 or /s/12
 		else if(((coap_options[1].length == 1 || coap_options[1].length == 2)) &&
 				(coap_options[1].type == COAP_OPTION_NUM_URIPATH))
@@ -436,7 +440,9 @@ owerror_t osens_val_receive(
 
         // /s/2/-12.45 or /s/12/12.45
 		if((coap_options[1].length == 1 || coap_options[1].length == 2) &&
-				coap_options[2].length > 0)
+				(coap_options[2].length > 0) &&
+				(coap_options[1].type == COAP_OPTION_NUM_URIPATH) &&
+				(coap_options[2].type == COAP_OPTION_NUM_URIPATH))
 		{
 			uint8_t index;
 			double number;
