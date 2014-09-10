@@ -25,6 +25,7 @@
 #include "opencoap_obj.h"
 #include "opentcp_obj.h"
 #include "ohlone_obj.h"
+#include "osens_app_obj.h"
 #include "r6t_obj.h"
 #include "tcpinject_obj.h"
 #include "idmanager_obj.h"
